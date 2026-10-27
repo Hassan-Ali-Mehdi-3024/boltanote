@@ -1,0 +1,9 @@
+{
+  "hamming_threshold_bits": 8,
+  "currency_photos": 3891,
+  "near_duplicate_groups": 3780,
+  "roboflow_total": 402,
+  "roboflow_dropped": 339,
+  "roboflow_kept": 63,
+  "roboflow_skipped_multi_or_none": 28
+}

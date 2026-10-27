@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.venv/
+outputs/
+data_raw/
+web/
+*.zip
+evaluation.json
+.vercel
