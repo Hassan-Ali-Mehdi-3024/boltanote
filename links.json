@@ -10,9 +10,9 @@
   "weights_pt": "https://github.com/Hassan-Ali-Mehdi-3024/boltanote/tree/main/weights",
   "notebook": "https://github.com/Hassan-Ali-Mehdi-3024/boltanote/blob/main/notebooks/BoltaNote_train.ipynb",
   "model_card": "model_card.json",
-  "report": "",
-  "slides": "",
-  "youtube": "",
+  "report": "https://boltanote.vercel.app/report.pdf",
+  "slides": "https://boltanote.vercel.app/slides.pdf",
+  "youtube": "https://youtu.be/Je7tUmXsgO8",
   "linkedin": "",
   "site": "https://boltanote.vercel.app"
 }

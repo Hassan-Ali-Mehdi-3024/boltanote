@@ -10,7 +10,7 @@ What I learned building it:
 
 Try it on your phone: https://boltanote.vercel.app
 Code, weights and my own test photos: https://github.com/Hassan-Ali-Mehdi-3024/boltanote
-Walkthrough video: [YouTube link]
+Walkthrough video: https://youtu.be/Je7tUmXsgO8
 
 Thanks to Dr. Munir Ahmad, and to the authors of the open Pakistani currency datasets.
 

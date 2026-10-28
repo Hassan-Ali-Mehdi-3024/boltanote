@@ -7,7 +7,7 @@
 - Datasets: Pakistan Image Currency Dataset (CC0) https://www.kaggle.com/datasets/rafayqayyum/pakistan-image-currency-dataset; external test: https://www.kaggle.com/datasets/muhammadasjadali/pakistani-currency-notes; own photos in the repo
 - Report: https://boltanote.vercel.app/report.pdf
 - Slides: https://boltanote.vercel.app/slides.pdf
-- Video: see project.json
+- Video: https://youtu.be/Je7tUmXsgO8
 - LinkedIn: see project.json
 - Machine-readable summary: /project.json ; model card: /model_card.json
 
