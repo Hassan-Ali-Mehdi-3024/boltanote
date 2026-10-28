@@ -35,11 +35,6 @@
       "url": "https://www.kaggle.com/datasets/muhammadasjadali/pakistani-currency-notes",
       "license": "CC BY 4.0",
       "use": "external test only, near-copies removed"
-    },
-    {
-      "name": "Our own photos",
-      "use": "real-world test only",
-      "folder": "data/own_photos"
     }
   ],
   "classes": [

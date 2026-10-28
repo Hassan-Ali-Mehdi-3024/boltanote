@@ -24,5 +24,4 @@
 ## How to test
 git clone https://github.com/Hassan-Ali-Mehdi-3024/boltanote && cd boltanote && pip install -r requirements.txt
 python evaluate.py                          # 16 bundled labelled photos
-python evaluate.py --folder data/own_photos # our own photos
 python predict.py samples/500_front_1.jpg

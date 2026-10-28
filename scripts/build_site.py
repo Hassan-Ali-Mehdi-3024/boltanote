@@ -124,6 +124,7 @@ fill = {
     "RF_TOTAL": dedupe["roboflow_total"], "RF_DROPPED": dedupe["roboflow_dropped"], "RF_KEPT": dedupe["roboflow_kept"],
     "RESULTS_ROWS": "\n    ".join(rows), "RESULTS_SENTENCE": sentence, "LINK_CARDS": "".join(cards),
     "LIMITS": "".join(f"<li>{l}</li>" for l in limits), "JSONLD": json.dumps(jsonld),
+    "OWN_CMD": "Our own photos: <code>python evaluate.py --folder data/own_photos</code>. " if own else "",
 }
 page = open("site/index.html", encoding="utf-8").read()
 for k, v in fill.items():
@@ -172,8 +173,7 @@ llms = f"""# BoltaNote
 ## How to test
 git clone {links['github']} && cd boltanote && pip install -r requirements.txt
 python evaluate.py                          # 16 bundled labelled photos
-python evaluate.py --folder data/own_photos # our own photos
-python predict.py samples/500_front_1.jpg
+""" + ("python evaluate.py --folder data/own_photos # our own photos\n" if own else "") + """python predict.py samples/500_front_1.jpg
 """
 open(f"{out}/llms.txt", "w", encoding="utf-8").write(llms)
 open(f"{out}/robots.txt", "w").write("User-agent: *\nAllow: /\n")
