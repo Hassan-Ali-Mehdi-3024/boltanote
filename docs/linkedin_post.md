@@ -9,7 +9,7 @@ What I learned building it:
 • MobileNet (ImageNet-pretrained) generalised far better than a CNN trained from scratch, and runs fast enough for a cheap phone.
 
 Try it on your phone: https://boltanote.vercel.app
-Code, weights and my own test photos: https://github.com/Hassan-Ali-Mehdi-3024/boltanote
+Code, weights and data splits: https://github.com/Hassan-Ali-Mehdi-3024/boltanote
 Walkthrough video: https://youtu.be/Je7tUmXsgO8
 
 Thanks to Dr. Munir Ahmad, and to the authors of the open Pakistani currency datasets.

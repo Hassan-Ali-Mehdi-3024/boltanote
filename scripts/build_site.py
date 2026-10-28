@@ -133,7 +133,7 @@ open(f"{out}/index.html", "w", encoding="utf-8").write(page)
 
 project = {
     "project": "BoltaNote", "task": card["task"], "author": links["author"], "course": "Deep Learning, Superior University (Dr. Munir Ahmad)",
-    "links": {k: links.get(k) for k, _, _ in LINKS},
+    "links": {k: links.get(k) for k, _, _ in LINKS if links.get(k) and exists_in_repo(links[k])},
     "datasets": card["datasets"], "classes": card["classes"], "values": card["values"], "input": card["input"], "outputs": card["outputs"],
     "speaking": {k: card["speaking"][k] for k in ("rule", "threshold", "threshold_chosen_on")},
     "deployed_model": best,
@@ -152,8 +152,9 @@ llms = f"""# BoltaNote
 > Talking Pakistani banknote reader for blind and low-vision people: phone camera -> note value spoken in Urdu or English, running in the browser. Deep Learning semester project by {links['author']}.
 
 - Live demo: {links.get('site') or '(this site)'}
-- Code, weights, data splits, own photos: {links['github']}
-- Datasets: Pakistan Image Currency Dataset (CC0) {links.get('dataset')}; external test: {links.get('dataset_external')}; own photos in the repo
+- Code, weights, data splits: {links['github']}
+- Training dataset (CC0): {links.get('dataset')}
+- External test dataset (CC BY 4.0): {links.get('dataset_external')}
 - Report: {links.get('report') or 'see GitHub docs/'}
 - Slides: {links.get('slides') or 'see GitHub docs/'}
 - Video: {links.get('youtube') or 'see project.json'}

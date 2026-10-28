@@ -7,7 +7,6 @@
     "github": "https://github.com/Hassan-Ali-Mehdi-3024/boltanote",
     "dataset": "https://www.kaggle.com/datasets/rafayqayyum/pakistan-image-currency-dataset",
     "dataset_external": "https://www.kaggle.com/datasets/muhammadasjadali/pakistani-currency-notes",
-    "own_photos": "https://github.com/Hassan-Ali-Mehdi-3024/boltanote/tree/main/data/own_photos",
     "weights_onnx": "https://github.com/Hassan-Ali-Mehdi-3024/boltanote/raw/main/weights/boltanote.onnx",
     "weights_torchscript": "https://github.com/Hassan-Ali-Mehdi-3024/boltanote/raw/main/weights/boltanote_torchscript.pt",
     "weights_pt": "https://github.com/Hassan-Ali-Mehdi-3024/boltanote/tree/main/weights",
@@ -15,7 +14,6 @@
     "report": "https://boltanote.vercel.app/report.pdf",
     "slides": "https://boltanote.vercel.app/slides.pdf",
     "youtube": "https://youtu.be/Je7tUmXsgO8",
-    "linkedin": "",
     "model_card": "model_card.json",
     "site": "https://boltanote.vercel.app"
   },

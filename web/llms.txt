@@ -3,8 +3,9 @@
 > Talking Pakistani banknote reader for blind and low-vision people: phone camera -> note value spoken in Urdu or English, running in the browser. Deep Learning semester project by Hassan Ali Mehdi.
 
 - Live demo: https://boltanote.vercel.app
-- Code, weights, data splits, own photos: https://github.com/Hassan-Ali-Mehdi-3024/boltanote
-- Datasets: Pakistan Image Currency Dataset (CC0) https://www.kaggle.com/datasets/rafayqayyum/pakistan-image-currency-dataset; external test: https://www.kaggle.com/datasets/muhammadasjadali/pakistani-currency-notes; own photos in the repo
+- Code, weights, data splits: https://github.com/Hassan-Ali-Mehdi-3024/boltanote
+- Training dataset (CC0): https://www.kaggle.com/datasets/rafayqayyum/pakistan-image-currency-dataset
+- External test dataset (CC BY 4.0): https://www.kaggle.com/datasets/muhammadasjadali/pakistani-currency-notes
 - Report: https://boltanote.vercel.app/report.pdf
 - Slides: https://boltanote.vercel.app/slides.pdf
 - Video: https://youtu.be/Je7tUmXsgO8

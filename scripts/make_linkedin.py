@@ -16,7 +16,7 @@ What I learned building it:
 • MobileNet (ImageNet-pretrained) generalised far better than a CNN trained from scratch, and runs fast enough for a cheap phone.
 
 Try it on your phone: {links.get('site') or '[Vercel link]'}
-Code, weights and my own test photos: {links['github']}
+Code, weights{' and my own test photos' if own else ' and data splits'}: {links['github']}
 Walkthrough video: {links.get('youtube') or '[YouTube link]'}
 
 Thanks to Dr. Munir Ahmad, and to the authors of the open Pakistani currency datasets.
