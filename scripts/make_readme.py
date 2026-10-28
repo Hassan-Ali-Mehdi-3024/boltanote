@@ -56,7 +56,7 @@ python evaluate.py                       # 16 bundled, labelled photos in sample
 
 ```bash
 python predict.py samples/500_front_1.jpg            # value, probability, what it would say
-python evaluate.py --folder data/own_photos          # our own photos (one folder per value)
+{"python evaluate.py --folder data/own_photos          # our own photos (one folder per value)" if n_own else ""}
 ```
 
 `predict.py` output for `samples/500_front_1.jpg` (real):
@@ -101,7 +101,7 @@ Training ran on one NVIDIA L4 in Google Colab: [`notebooks/BoltaNote_train.ipynb
 ```bash
 bash scripts/get_data.sh data_raw
 python train.py --data data_raw --model mobilenetv3_large --out outputs     # ~2 min on an L4
-python report.py --runs outputs --data data_raw --own data/own_photos       # weights/, figures, model card
+python report.py --runs outputs --data data_raw{" --own data/own_photos" if n_own else ""}       # weights/, figures, model card
 ```
 
 ## Repository
@@ -110,7 +110,7 @@ python report.py --runs outputs --data data_raw --own data/own_photos       # we
 predict.py  evaluate.py          inference (numpy + pillow + onnxruntime only)
 train.py  report.py              training, export, threshold calibration, figures
 boltanote/                       models, data, augmentation, metrics
-data/splits.csv  data/own_photos/
+data/splits.csv{"  data/own_photos/" if n_own else ""}
 weights/                         ONNX, TorchScript, PyTorch checkpoints
 samples/                         16 labelled test photos
 results/                         metrics, per-photo predictions, figures, duplicate check
