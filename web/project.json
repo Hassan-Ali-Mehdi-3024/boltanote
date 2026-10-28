@@ -1,0 +1,145 @@
+{
+  "project": "BoltaNote",
+  "task": "Pakistani banknote recognition for blind and low-vision people",
+  "author": "Hassan Ali Mehdi",
+  "course": "Deep Learning, Superior University (Dr. Munir Ahmad)",
+  "links": {
+    "github": "https://github.com/Hassan-Ali-Mehdi-3024/boltanote",
+    "dataset": "https://www.kaggle.com/datasets/rafayqayyum/pakistan-image-currency-dataset",
+    "dataset_external": "https://www.kaggle.com/datasets/muhammadasjadali/pakistani-currency-notes",
+    "own_photos": "https://github.com/Hassan-Ali-Mehdi-3024/boltanote/tree/main/data/own_photos",
+    "weights_onnx": "https://github.com/Hassan-Ali-Mehdi-3024/boltanote/raw/main/weights/boltanote.onnx",
+    "weights_torchscript": "https://github.com/Hassan-Ali-Mehdi-3024/boltanote/raw/main/weights/boltanote_torchscript.pt",
+    "weights_pt": "https://github.com/Hassan-Ali-Mehdi-3024/boltanote/tree/main/weights",
+    "notebook": "https://github.com/Hassan-Ali-Mehdi-3024/boltanote/blob/main/notebooks/BoltaNote_train.ipynb",
+    "report": "report.pdf",
+    "slides": "",
+    "youtube": "",
+    "linkedin": "",
+    "model_card": "model_card.json",
+    "site": ""
+  },
+  "datasets": [
+    {
+      "name": "Pakistan Image Currency Dataset",
+      "url": "https://www.kaggle.com/datasets/rafayqayyum/pakistan-image-currency-dataset",
+      "license": "CC0",
+      "use": "train / val / test"
+    },
+    {
+      "name": "Imagenette (160 px)",
+      "url": "https://github.com/fastai/imagenette",
+      "license": "Apache-2.0 (images from ImageNet)",
+      "use": "extra 'no note' photos"
+    },
+    {
+      "name": "Pakistani Currency Notes Dataset (2kbase)",
+      "url": "https://www.kaggle.com/datasets/muhammadasjadali/pakistani-currency-notes",
+      "license": "CC BY 4.0",
+      "use": "external test only, near-copies removed"
+    },
+    {
+      "name": "Our own photos",
+      "use": "real-world test only",
+      "folder": "data/own_photos"
+    }
+  ],
+  "classes": [
+    "10_front",
+    "10_back",
+    "20_front",
+    "20_back",
+    "50_front",
+    "50_back",
+    "100_front",
+    "100_back",
+    "500_front",
+    "500_back",
+    "1000_front",
+    "1000_back",
+    "5000_front",
+    "5000_back",
+    "none"
+  ],
+  "values": [
+    "10",
+    "20",
+    "50",
+    "100",
+    "500",
+    "1000",
+    "5000",
+    "none"
+  ],
+  "input": {
+    "name": "image",
+    "shape": [
+      1,
+      3,
+      224,
+      224
+    ],
+    "dtype": "float32",
+    "range": [
+      0,
+      1
+    ],
+    "layout": "RGB, channels first",
+    "preprocessing": "whole photo, EXIF-rotated upright, resized (squeezed) to 224x224 bilinear, divide by 255; normalisation is inside the model"
+  },
+  "outputs": {
+    "probs": "softmax over the 15 classes, shape [1, 15]; add front + back for the note value"
+  },
+  "speaking": {
+    "rule": "speak the top value if it is not 'none' and its probability >= threshold (the app also needs 3 frames in a row)",
+    "threshold": 0.68,
+    "threshold_chosen_on": "lowest threshold with <= 0.2% (1 in 500) wrong-value rate on 4 augmented passes of the validation set"
+  },
+  "deployed_model": "mobilenetv3_large",
+  "results": {
+    "internal_test": {
+      "photos": 727,
+      "value_accuracy": 1.0,
+      "wrong_value_rate": 0.0,
+      "coverage_on_notes": 0.994392523364486
+    },
+    "external_test": {
+      "photos": 63,
+      "value_accuracy": 0.9206349206349206
+    },
+    "own_photos": null
+  },
+  "all_models": {
+    "cnn_scratch": {
+      "test_value_accuracy": 0.9958734525447043,
+      "external_value_accuracy": 0.8253968253968254,
+      "params_million": 2.36,
+      "onnx_cpu_ms": 88.0
+    },
+    "mobilenetv3_large": {
+      "test_value_accuracy": 1.0,
+      "external_value_accuracy": 0.9206349206349206,
+      "params_million": 4.22,
+      "onnx_cpu_ms": 15.1
+    },
+    "mobilenetv4_conv_medium": {
+      "test_value_accuracy": 0.9986244841815681,
+      "external_value_accuracy": 0.9206349206349206,
+      "params_million": 8.45,
+      "onnx_cpu_ms": 37.1
+    }
+  },
+  "how_to_test": [
+    "git clone https://github.com/Hassan-Ali-Mehdi-3024/boltanote",
+    "pip install -r requirements.txt",
+    "python evaluate.py",
+    "python predict.py samples/500_front_1.jpg"
+  ],
+  "weights_files": {
+    "boltanote.onnx": "https://github.com/Hassan-Ali-Mehdi-3024/boltanote/raw/main/weights/boltanote.onnx",
+    "boltanote_torchscript.pt": "https://github.com/Hassan-Ali-Mehdi-3024/boltanote/raw/main/weights/boltanote_torchscript.pt",
+    "cnn_scratch.pt": "https://github.com/Hassan-Ali-Mehdi-3024/boltanote/raw/main/weights/cnn_scratch.pt",
+    "mobilenetv3_large.pt": "https://github.com/Hassan-Ali-Mehdi-3024/boltanote/raw/main/weights/mobilenetv3_large.pt",
+    "mobilenetv4_conv_medium.pt": "https://github.com/Hassan-Ali-Mehdi-3024/boltanote/raw/main/weights/mobilenetv4_conv_medium.pt"
+  }
+}

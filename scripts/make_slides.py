@@ -27,29 +27,29 @@ author = links["author"]
 
 CSS = """
 body{background:#e9e6dc}
-.slide{background:#fbfaf6;color:#111;padding:90px 110px}
+.slide{background:#fbfaf6;color:#111;padding:80px 120px 110px;display:flex;flex-direction:column;justify-content:center}
 .slide:after{content:"BoltaNote · بولتا نوٹ";position:absolute;left:110px;bottom:44px;font-size:22px;color:#8a8a80;font-family:Inter}
 .bar{position:absolute;left:0;top:0;bottom:0;width:22px;background:#ffd400}
 h1{font-size:96px;line-height:1.02;margin:0 0 24px;letter-spacing:-.03em;font-weight:900}
-h2{font-size:64px;line-height:1.08;margin:0 0 40px;letter-spacing:-.02em;font-weight:850}
+h2{font-size:72px;line-height:1.08;margin:0 0 50px;letter-spacing:-.02em;font-weight:850}
 .ur{font-family:"Noto Nastaliq Urdu",serif;direction:rtl;line-height:2.1}
-.lead{font-size:38px;color:#3a3a36;line-height:1.4;max-width:1500px}
-ul{margin:0;padding-left:44px} li{font-size:38px;line-height:1.45;margin:10px 0;color:#222}
+.lead{font-size:44px;color:#3a3a36;line-height:1.4;max-width:1500px}
+ul{margin:0;padding-left:48px} li{font-size:44px;line-height:1.42;margin:14px 0;color:#222}
 li b{color:#000}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
 .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:36px}
 .stat{background:#fff;border:3px solid #ece8da;border-radius:28px;padding:36px 40px}
-.stat .n{font-size:110px;font-weight:900;letter-spacing:-.03em;line-height:1}
-.stat .l{font-size:30px;color:#555;margin-top:14px;line-height:1.3}
+.stat .n{font-size:128px;font-weight:900;letter-spacing:-.03em;line-height:1}
+.stat .l{font-size:34px;color:#555;margin-top:14px;line-height:1.3}
 .yellow{background:#ffd400;border-color:#ffd400}
 .green{color:#0a5c36}
 .red{color:#b42318}
-img.fig{width:100%;border-radius:18px;border:3px solid #ece8da;background:#fff}
+img.fig{width:100%;max-height:820px;object-fit:contain;border-radius:18px;border:3px solid #ece8da;background:#fff}
 .muted{color:#6b6b63;font-size:28px}
 .tag{display:inline-block;background:#111;color:#ffd400;font-weight:800;font-size:26px;padding:8px 18px;border-radius:12px;margin-bottom:28px;letter-spacing:.04em}
-table{border-collapse:collapse;font-size:34px;width:100%} td,th{padding:16px 20px;border-bottom:3px solid #ece8da;text-align:left} th{font-size:24px;color:#777;text-transform:uppercase;letter-spacing:.06em}
+table{border-collapse:collapse;font-size:38px;width:100%} td,th{padding:20px 22px;border-bottom:3px solid #ece8da;text-align:left} th{font-size:24px;color:#777;text-transform:uppercase;letter-spacing:.06em}
 tr.dep td{background:#fff4b8}
-.phone{width:520px;border-radius:48px;border:14px solid #111;box-shadow:0 30px 60px rgba(0,0,0,.25)}
+.phone{width:430px;border-radius:48px;border:14px solid #111;box-shadow:0 30px 60px rgba(0,0,0,.25)}
 """
 
 own_line = (f"On <b>{own['n']}</b> photos of my own notes: <b>{pct(own['value_accuracy'])}</b>" if own else "My own photos: being collected")
@@ -99,7 +99,7 @@ slides = [
      "say": f"Here are the honest numbers. {pct(B['test']['value_accuracy'], 0)} on unseen photos from the same dataset, but {pct(ext['value_accuracy'], 0) if ext else 'less'} on photos by other people" + (f", and {pct(own['value_accuracy'], 0)} on {own['n']} photos I took of my own notes." if own else ".") + " The first number mostly shows how alike the dataset's photos are; the others are what a real user would get."},
     {"html": f"""<div class=bar></div><h2>When to speak, and when to stay silent</h2><div class=grid2><img class=fig src="figures/speak_threshold.png"><div><ul>
 <li>Validation photos look too easy: any threshold seems safe</li><li>So: calibrate on a <b>stress test</b>, validation photos × 4 augmentations</li>
-<li>Threshold <b>{B['speaking_threshold']:.2f}</b>: ≤ 1% wrong values there</li><li>Plus: same answer in <b>3 frames in a row</b></li></ul></div></div>""",
+<li>Threshold <b>{B['speaking_threshold']:.2f}</b>: at most 1 wrong value in 500 there</li><li>Plus: same answer in <b>3 frames in a row</b></li></ul></div></div>""",
      "say": f"The most important design decision is when to speak. On ordinary validation photos the model is almost never wrong, so any threshold looks safe. So I calibrated on a stress test: every validation photo four times, with the hard augmentations. The app speaks only above {B['speaking_threshold']:.2f} confidence, and only when three frames in a row agree."},
     {"html": f"""<div class=bar></div><div class=grid2><div><h2>Live demo</h2><ul><li>Open <b>{site}</b> on any phone</li><li>Tap <b>Start camera</b></li><li>Hold a note ~20 cm away</li><li>It speaks: <span class=ur>ایک ہزار روپے</span></li></ul></div>
 <div style="text-align:center"><img class=phone src="figures/site_phone.png"></div></div>""",

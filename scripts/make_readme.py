@@ -16,6 +16,10 @@ ext, own = B.get("external"), B.get("own")
 pct = lambda v, d=1: f"{v * 100:.{d}f}%"
 gh = links["github"]
 slug = gh.replace("https://github.com/", "")
+DOCS = {"report": "docs/BoltaNote_report.pdf", "slides": "docs/slides/BoltaNote_slides.pdf"}
+for k, path in DOCS.items():
+    if not links.get(k) and os.path.exists(path):
+        links[k] = path
 L = lambda k, text: f"[{text}]({links[k]})" if links.get(k) else f"{text} (coming soon)"
 example = subprocess.run([sys.executable, "predict.py", "samples/500_front_1.jpg"], capture_output=True, text=True, check=True).stdout.strip()
 example = json.dumps({k: v for k, v in json.loads(example).items() if k != "file"}, indent=1, ensure_ascii=False)
@@ -38,8 +42,8 @@ Deep Learning semester project, BSCS-7A, Superior University, Lahore. Instructor
 
 {open('results/results.md').read()}
 - Deployed: **{card['architecture']}**, chosen on validation accuracy.
-- Same-dataset test: {pct(B['test']['value_accuracy'])} of {B['test']['n']} unseen photos. **Other photographers** ({ext['n'] if ext else 0} photos): {pct(ext['value_accuracy']) if ext else '–'}. **Our own photos** ({own['n'] if own else 0}): {pct(own['value_accuracy']) if own else 'being collected'}.
-- The app speaks only when the top value's probability is ≥ **{B['speaking_threshold']:.2f}** (and 3 frames agree). That threshold keeps wrong values ≤ 1% on a stress-tested validation set (each validation photo × 4 augmentations); no test photo was used to set it.
+- Same-dataset test: {pct(B['test']['value_accuracy'])} of {B['test']['n']} unseen photos. **Other photographers** ({ext['n'] if ext else 0} photos): {pct(ext['value_accuracy']) if ext else '–'}. **Our own photos**: {(pct(own['value_accuracy']) + ' of ' + str(own['n'])) if own else 'being collected'}.
+- The app speaks only when the top value's probability is ≥ **{B['speaking_threshold']:.2f}** (and 3 frames agree). That threshold keeps wrong values ≤ 1 in 500 (0.2%) on a stress-tested validation set (each validation photo × 4 augmentations); no test photo was used to set it.
 - **Duplicate check:** {D['roboflow_dropped']} of {D['roboflow_total']} test photos in the second public dataset are near-copies (perceptual hash ≤ 8 bits) of the training dataset's photos; only {D['roboflow_kept']} are used as the external test.
 
 ## Test it in 3 commands
@@ -78,7 +82,7 @@ Input: the whole photo, upright, squeezed to 224×224 RGB, float32 in [0, 1], sh
 | [Pakistan Image Currency Dataset]({links['dataset']}) (3,611 note photos + 280 others) | train / val / test, 70/15/15 per class, near-copies kept together | CC0 |
 | [Imagenette](https://github.com/fastai/imagenette) (1,000 photos) | extra "no note" photos | Apache-2.0 |
 | [Pakistani Currency Notes Dataset]({links['dataset_external']}) ({D['roboflow_kept']} photos after de-duplication) | external test only | CC BY 4.0 |
-| [`data/own_photos/`](data/own_photos) ({n_own} photos) | our own notes, real rooms: real-world test only | ours (CC BY 4.0) |
+{f"| [`data/own_photos/`](data/own_photos) ({n_own} photos) | our own notes, real rooms: real-world test only | ours (CC BY 4.0) |" if n_own else ""}
 
 Exact files: [`data/splits.csv`](data/splits.csv). Rebuild: `bash scripts/get_data.sh data_raw && python scripts/make_splits.py --data data_raw`.
 

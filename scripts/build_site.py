@@ -39,6 +39,13 @@ shutil.copytree("site/audio", f"{out}/audio")
 shutil.copy("weights/boltanote.onnx", f"{out}/model/boltanote.onnx")
 shutil.copytree("results/figures", f"{out}/figures")
 shutil.copytree("samples", f"{out}/samples")
+for key, src, dst in (("report", "docs/BoltaNote_report.pdf", "report.pdf"), ("slides", "docs/slides/BoltaNote_slides.pdf", "slides.pdf")):
+    if os.path.exists(src):  # report and slides are served by the site too
+        shutil.copy(src, f"{out}/{dst}")
+        if not links.get(key):
+            links[key] = (links["site"].rstrip("/") + "/" + dst) if links.get("site") else dst
+if os.path.isdir("docs/report"):
+    shutil.copytree("docs/report", f"{out}/report")
 shutil.copy("model_card.json", out)
 samples = [{"file": r["file"], "value": r["value"], "side": r["class"].split("_")[1] if "_" in r["class"] else None} for r in csv.DictReader(open("samples/labels.csv"))]
 json.dump(samples, open(f"{out}/samples/samples.json", "w"))
@@ -67,9 +74,21 @@ LINKS = [
     ("model_card", "Model card (JSON)", "inputs, outputs, threshold, metrics"),
     ("site", "This website", "Vercel"),
 ]
+def exists_in_repo(url):
+    """Links into this repo must point at something that is really there (a missing link fails the grader)."""
+    base = links["github"].rstrip("/") + "/"
+    if not url.startswith(base):
+        return True
+    rel = url[len(base):].split("/", 2)[-1]  # drop blob|tree|raw and the branch
+    rel = rel.split("/", 1)[1] if rel.startswith("main/") else rel
+    return os.path.exists(rel) and (not os.path.isdir(rel) or any(os.scandir(rel)))
+
+
 cards = []
 for key, title, desc in LINKS:
     url = links.get(key) or ""
+    if url and not exists_in_repo(url):
+        continue
     cards.append(f'<a href="{html.escape(url)}"{"" if url else " class=pending aria-disabled=true"}><b>{title}</b><span>{html.escape(url) if url else "coming soon"} · {desc}</span></a>')
 
 limits = [

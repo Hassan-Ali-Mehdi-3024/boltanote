@@ -9,7 +9,7 @@ Speaking threshold. Validation photos come from the same few notes and rooms as 
 model is over-confident on them (any threshold looks safe). We therefore calibrate on a *stress*
 version of the validation set: each validation photo 4 times with the training augmentations
 (rotation, zoom, fingers, dim light, blur), and take the lowest threshold at which the model would
-say a wrong value on at most 1% of those. No test photo is used for this choice.
+say a wrong value on at most 1 in 500 (0.2%) of those. No test photo is used for this choice.
 
 The deployed model is the one with the best validation value accuracy (ties: faster on CPU).
 Writes weights/, model_card.json, results/.
@@ -123,7 +123,7 @@ def main():
         sess, err, ms = export_onnx(model, f"weights/_{m}.onnx")
         p = {s: run(sess, x) for s, x in images.items()}
         p_stress = run(sess, stress)
-        thr = speaking_threshold(to_groups(p_stress), stress_groups, max_wrong=0.01)
+        thr = speaking_threshold(to_groups(p_stress), stress_groups, max_wrong=0.002)
         r = {k: colab[k] for k in ("model", "best_epoch", "epochs", "lr", "batch", "image_size", "params_million", "train_minutes")}
         r.update(onnx_cpu_ms=round(ms, 1), onnx_max_abs_err=err, onnx_mb=round(os.path.getsize(f"weights/_{m}.onnx") / 1e6, 1),
                  speaking_threshold=thr, threshold_from_clean_val=speaking_threshold(to_groups(p["val"]), groups["val"]))
@@ -242,7 +242,7 @@ def main():
                          "accuracy_when_speaking": sp["accuracy_when_speaking"], "false_alarm_on_no_note": sp["false_alarm_on_no_note"]}),
                   open("results/own_photos.json", "w"), indent=2)
 
-    summary = {"deployed_model": best, "speaking_threshold_method": "lowest threshold with <= 1% wrong-value rate on 4 augmented passes of the validation set",
+    summary = {"deployed_model": best, "speaking_threshold_method": "lowest threshold with <= 0.2% (1 in 500) wrong-value rate on 4 augmented passes of the validation set",
                "models": runs}
     json.dump(clean(summary), open("results/summary.json", "w"), indent=2)
     lines = ["| Model | Params | Test | Other photographers | Own photos | Wrong value said (test / other / own) | CPU ms |", "|---|---|---|---|---|---|---|"]

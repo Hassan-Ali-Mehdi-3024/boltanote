@@ -1,0 +1,27 @@
+# BoltaNote
+
+> Talking Pakistani banknote reader for blind and low-vision people: phone camera -> note value spoken in Urdu or English, running in the browser. Deep Learning semester project by Hassan Ali Mehdi.
+
+- Live demo: (this site)
+- Code, weights, data splits, own photos: https://github.com/Hassan-Ali-Mehdi-3024/boltanote
+- Datasets: Pakistan Image Currency Dataset (CC0) https://www.kaggle.com/datasets/rafayqayyum/pakistan-image-currency-dataset; external test: https://www.kaggle.com/datasets/muhammadasjadali/pakistani-currency-notes; own photos in the repo
+- Report: report.pdf
+- Slides: see GitHub docs/
+- Video: see project.json
+- LinkedIn: see project.json
+- Machine-readable summary: /project.json ; model card: /model_card.json
+
+## Model
+- Deployed: MobileNetV3-Large; input [1, 3, 224, 224] float32 RGB in [0,1] (whole photo squeezed to 224x224); output probs [1,15] over 10_front, 10_back, 20_front, 20_back, 50_front, 50_back, 100_front, 100_back, 500_front, 500_back, 1000_front, 1000_back, 5000_front, 5000_back, none. Add front+back per value.
+- Weights: weights/boltanote.onnx (ONNX), weights/boltanote_torchscript.pt (TorchScript), weights/mobilenetv3_large.pt (PyTorch state_dict).
+- Speaks if top value != none and probability >= 0.68.
+
+## Results
+- Internal test (727 photos): value accuracy 100.0%, wrong value said 0.0%.
+- External test (63 photos, other photographers): 92.1%.
+
+## How to test
+git clone https://github.com/Hassan-Ali-Mehdi-3024/boltanote && cd boltanote && pip install -r requirements.txt
+python evaluate.py                          # 16 bundled labelled photos
+python evaluate.py --folder data/own_photos # our own photos
+python predict.py samples/500_front_1.jpg

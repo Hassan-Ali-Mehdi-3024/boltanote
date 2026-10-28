@@ -25,7 +25,7 @@ def to_groups(probs):
     return out
 
 
-def speaking_threshold(gprobs, groups, max_wrong=0.01):
+def speaking_threshold(gprobs, groups, max_wrong=0.002):
     """Lowest threshold at which the wrong-value rate on these photos is <= max_wrong."""
     gprobs, groups = np.asarray(gprobs), np.asarray(groups)
     for t in np.round(np.arange(0.40, 0.991, 0.01), 2):
