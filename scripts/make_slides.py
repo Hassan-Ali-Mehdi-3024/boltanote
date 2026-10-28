@@ -54,8 +54,11 @@ tr.dep td{background:#fff4b8}
 
 own_line = (f"On <b>{own['n']}</b> photos of my own notes: <b>{pct(own['value_accuracy'])}</b>" if own else "My own photos: being collected")
 rows = "".join(f"<tr class='{'dep' if m == best else ''}'><td>{NICE[m]}</td><td>{r['params_million']}M</td><td>{pct(r['test']['value_accuracy'])}</td>"
-               f"<td>{pct(r['external']['value_accuracy']) if r.get('external') else '–'}</td><td>{pct(r['own']['value_accuracy']) if r.get('own') else '–'}</td><td>{r['onnx_cpu_ms']:.0f} ms</td></tr>"
-               for m, r in runs.items())
+               f"<td>{pct(r['external']['value_accuracy']) if r.get('external') else '–'}</td>" + (f"<td>{pct(r['own']['value_accuracy']) if r.get('own') else '–'}</td>" if own else "")
+               + f"<td>{r['onnx_cpu_ms']:.0f} ms</td></tr>" for m, r in runs.items())
+own_th = "<th>My photos</th>" if own else ""
+third = (f"""<div class=stat><div class="n green">{pct(own['value_accuracy'], 0)}</div><div class=l>my own {own['n']} photos</div></div>""" if own else
+         f"""<div class=stat><div class="n green">{pct(ext['speaking']['wrong_value_rate'], 0) if ext else '–'}</div><div class=l>wrong amounts spoken on the photos by other people</div></div>""")
 
 slides = [
     {"html": f"""<div class=bar></div><div class=grid2><div><div class=tag>DEEP LEARNING · SEMESTER PROJECT</div><h1>BoltaNote</h1>
@@ -88,20 +91,20 @@ slides = [
     {"html": """<div class=bar></div><h2>Training for how blind people actually hold notes</h2><img class=fig src="figures/augmentations.png" style="max-height:740px;width:auto">""",
      "say": "Training images are changed on the GPU every time they're seen: any angle, too close, half out of frame, fingers over the note, dim or yellow light, and blur. No mirror flips, because the camera never sees a mirrored note."},
     {"html": f"""<div class=bar></div><h2>Three models: accuracy vs speed</h2>
-<table><tr><th>Model</th><th>Params</th><th>Same dataset</th><th>Other people</th><th>My photos</th><th>CPU</th></tr>{rows}</table>
+<table><tr><th>Model</th><th>Params</th><th>Same dataset</th><th>Other people</th>{own_th}<th>CPU</th></tr>{rows}</table>
 <p class=muted style="margin-top:30px">Same data, same recipe. Highlighted: deployed (best on validation).</p>""",
      "say": f"I compared a CNN trained from scratch with two phone networks pretrained on ImageNet: MobileNet version three and the new MobileNet version four. On photos from the same dataset, all three are almost perfect. On photos taken by other people, the difference shows: transfer learning holds up far better. I deployed {NICE[best]}, the best on validation" + (", and also the fastest." if B["onnx_cpu_ms"] == min(r["onnx_cpu_ms"] for r in runs.values()) else ".")},
     {"html": f"""<div class=bar></div><h2>The honest numbers</h2><div class=grid3>
 <div class=stat><div class=n>{pct(B['test']['value_accuracy'], 0)}</div><div class=l>unseen photos from the same dataset</div></div>
 <div class="stat yellow"><div class=n>{pct(ext['value_accuracy'], 0) if ext else '–'}</div><div class=l>photos by other photographers ({D['roboflow_kept']})</div></div>
-<div class=stat><div class="n green">{pct(own['value_accuracy'], 0) if own else '…'}</div><div class=l>{('my own ' + str(own['n']) + ' photos') if own else 'my own photos'}</div></div></div>
+{third}</div>
 <p class=lead style="margin-top:46px">The same-dataset score mostly shows how alike those photos are.<br>The other two are what a user would get.</p>""",
-     "say": f"Here are the honest numbers. {pct(B['test']['value_accuracy'], 0)} on unseen photos from the same dataset, but {pct(ext['value_accuracy'], 0) if ext else 'less'} on photos by other people" + (f", and {pct(own['value_accuracy'], 0)} on {own['n']} photos I took of my own notes." if own else ".") + " The first number mostly shows how alike the dataset's photos are; the others are what a real user would get."},
+     "say": f"Here are the honest numbers. {pct(B['test']['value_accuracy'], 0)} on unseen photos from the same dataset, but {pct(ext['value_accuracy'], 0) if ext else 'less'} on photos by other people" + (f", and {pct(own['value_accuracy'], 0)} on {own['n']} photos I took of my own notes." if own else ", and on those photos it never said a wrong amount.") + " The first number mostly shows how alike the dataset's photos are; the others are what a real user would get."},
     {"html": f"""<div class=bar></div><h2>When to speak, and when to stay silent</h2><div class=grid2><img class=fig src="figures/speak_threshold.png"><div><ul>
 <li>Validation photos look too easy: any threshold seems safe</li><li>So: calibrate on a <b>stress test</b>, validation photos × 4 augmentations</li>
 <li>Threshold <b>{B['speaking_threshold']:.2f}</b>: at most 1 wrong value in 500 there</li><li>Plus: same answer in <b>3 frames in a row</b></li></ul></div></div>""",
      "say": f"The most important design decision is when to speak. On ordinary validation photos the model is almost never wrong, so any threshold looks safe. So I calibrated on a stress test: every validation photo four times, with the hard augmentations. The app speaks only above {B['speaking_threshold']:.2f} confidence, and only when three frames in a row agree."},
-    {"html": f"""<div class=bar></div><div class=grid2><div><h2>Live demo</h2><ul><li>Open <b>{site}</b> on any phone</li><li>Tap <b>Start camera</b></li><li>Hold a note ~20 cm away</li><li>It speaks: <span class=ur>ایک ہزار روپے</span></li></ul></div>
+    {"html": f"""<div class=bar></div><div class=grid2><div><h2>Live demo</h2><ul><li>Open <b>{site}</b> on any phone</li><li>Tap <b>Start camera</b></li><li>Hold a note ~20 cm away</li><li>It speaks: <span class=ur>پانچ سو روپے</span></li></ul></div>
 <div style="text-align:center"><img class=phone src="figures/site_phone.png"></div></div>""",
      "say": f"Here's the live demo. I open the site on my phone, tap Start camera, and hold a note in front of it. It reads several frames a second and speaks the value, with nothing installed."},
     {"html": """<div class=bar></div><h2>Limits, and what's next</h2><div class=grid2><div><b style="font-size:34px">Limits</b><ul>
@@ -109,9 +112,9 @@ slides = [
 <div><b style="font-size:34px">Next</b><ul><li>Worn, torn and taped notes</li><li>Count a whole handful of notes</li><li>Test with blind users</li></ul></div></div>""",
      "say": "Its limits: the training photos show only a few physical notes per value, it knows the current note designs but not the State Bank's new series, it reads one note at a time, and it doesn't detect counterfeits. Next: worn notes, counting a whole handful, and a test with blind users."},
     {"html": f"""<div class=bar></div><h2>Everything is open</h2><ul style="margin-top:20px">
-<li>Try it: <b>{site}</b></li><li>Code, weights, splits, my photos: <b>{gh}</b></li><li>Report, slides, model card: linked on the site</li></ul>
+<li>Try it: <b>{site}</b></li><li>Code, weights, splits{', my photos' if own else ''}: <b>{gh}</b></li><li>Report, slides, model card: linked on the site</li></ul>
 <p class=lead style="margin-top:70px">Thank you, Dr. Munir Ahmad.</p><div class=ur style="font-size:60px;margin-top:20px">شکریہ</div>""",
-     "say": "Everything is open: the website, the code, the weights, the data splits and my own photos are all linked. Thank you, Dr. Munir Ahmad, and thank you for watching."},
+     "say": "Everything is open: the website, the code, the weights and the data splits" + (" and my own photos" if own else "") + " are all linked. Thank you, Dr. Munir Ahmad, and thank you for watching."},
 ]
 
 assets = {"results/figures": "figures"}

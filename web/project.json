@@ -12,12 +12,12 @@
     "weights_torchscript": "https://github.com/Hassan-Ali-Mehdi-3024/boltanote/raw/main/weights/boltanote_torchscript.pt",
     "weights_pt": "https://github.com/Hassan-Ali-Mehdi-3024/boltanote/tree/main/weights",
     "notebook": "https://github.com/Hassan-Ali-Mehdi-3024/boltanote/blob/main/notebooks/BoltaNote_train.ipynb",
-    "report": "report.pdf",
-    "slides": "",
+    "report": "https://boltanote.vercel.app/report.pdf",
+    "slides": "https://boltanote.vercel.app/slides.pdf",
     "youtube": "",
     "linkedin": "",
     "model_card": "model_card.json",
-    "site": ""
+    "site": "https://boltanote.vercel.app"
   },
   "datasets": [
     {

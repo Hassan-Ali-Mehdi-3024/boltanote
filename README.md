@@ -5,7 +5,7 @@
 
 **A talking banknote reader for blind people in Pakistan. Point the phone camera at a note; it says the value out loud in Urdu (or English). Runs in any phone browser, offline once loaded.**
 
-Live demo (coming soon) · [Report (PDF)](docs/BoltaNote_report.pdf) · Slides (coming soon) · Video (coming soon) · LinkedIn post (coming soon) · [Dataset (Kaggle)](https://www.kaggle.com/datasets/rafayqayyum/pakistan-image-currency-dataset) · [Model card](model_card.json)
+[Live demo](https://boltanote.vercel.app) · [Report (PDF)](docs/BoltaNote_report.pdf) · [Slides](docs/slides/BoltaNote_slides.pdf) · Video (coming soon) · LinkedIn post (coming soon) · [Dataset (Kaggle)](https://www.kaggle.com/datasets/rafayqayyum/pakistan-image-currency-dataset) · [Model card](model_card.json)
 
 Deep Learning semester project, BSCS-7A, Superior University, Lahore. Instructor: Dr. Munir Ahmad. Author: Hassan Ali Mehdi.
 

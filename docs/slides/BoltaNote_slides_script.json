@@ -1,0 +1,50 @@
+[
+  {
+    "slide": 1,
+    "say": "Assalam o alaikum. I'm Hassan Ali Mehdi, and this is BoltaNote, which means 'the talking note'. You point your phone at a Pakistani banknote, and it tells you the value out loud, in Urdu."
+  },
+  {
+    "slide": 2,
+    "say": "Pakistan has about one point one million blind people, and most daily payments are still made in cash. Our seven notes differ only a little in size, so a blind person usually has to ask a stranger which note is which, and trust the answer. Mixing up a five hundred and a five thousand costs four and a half thousand rupees."
+  },
+  {
+    "slide": 3,
+    "say": "BoltaNote is just a web page. It reads the camera four times a second and speaks the value in Urdu or English, with a recorded voice, so it works even on phones that have no Urdu speech. It stays silent when it's unsure, because saying a wrong amount is worse than saying nothing. Once loaded, it works offline, and it also vibrates a code and works with screen readers."
+  },
+  {
+    "slide": 4,
+    "say": "I trained on a public dataset of three thousand six hundred real phone photos: seven notes, front and back, many folded or half visible. I added a 'no note' class with a thousand everyday photos, so the model learns when to stay quiet."
+  },
+  {
+    "slide": 5,
+    "say": "Before trusting any number, I checked whether the test photos were really new. I hashed every photo, and found that 339 of the 402 test photos in a second public currency dataset are near-copies of the first. Only 63 were genuinely new. Without this check, my external test would have looked perfect and meant nothing."
+  },
+  {
+    "slide": 6,
+    "say": "Training images are changed on the GPU every time they're seen: any angle, too close, half out of frame, fingers over the note, dim or yellow light, and blur. No mirror flips, because the camera never sees a mirrored note."
+  },
+  {
+    "slide": 7,
+    "say": "I compared a CNN trained from scratch with two phone networks pretrained on ImageNet: MobileNet version three and the new MobileNet version four. On photos from the same dataset, all three are almost perfect. On photos taken by other people, the difference shows: transfer learning holds up far better. I deployed MobileNetV3-Large, the best on validation, and also the fastest."
+  },
+  {
+    "slide": 8,
+    "say": "Here are the honest numbers. 100% on unseen photos from the same dataset, but 92% on photos by other people, and on those photos it never said a wrong amount. The first number mostly shows how alike the dataset's photos are; the others are what a real user would get."
+  },
+  {
+    "slide": 9,
+    "say": "The most important design decision is when to speak. On ordinary validation photos the model is almost never wrong, so any threshold looks safe. So I calibrated on a stress test: every validation photo four times, with the hard augmentations. The app speaks only above 0.68 confidence, and only when three frames in a row agree."
+  },
+  {
+    "slide": 10,
+    "say": "Here's the live demo. I open the site on my phone, tap Start camera, and hold a note in front of it. It reads several frames a second and speaks the value, with nothing installed."
+  },
+  {
+    "slide": 11,
+    "say": "Its limits: the training photos show only a few physical notes per value, it knows the current note designs but not the State Bank's new series, it reads one note at a time, and it doesn't detect counterfeits. Next: worn notes, counting a whole handful, and a test with blind users."
+  },
+  {
+    "slide": 12,
+    "say": "Everything is open: the website, the code, the weights and the data splits are all linked. Thank you, Dr. Munir Ahmad, and thank you for watching."
+  }
+]

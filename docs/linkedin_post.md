@@ -8,7 +8,7 @@ What I learned building it:
 • Silence beats a wrong answer: it only speaks above a confidence threshold calibrated on stress-tested photos, and when 3 frames in a row agree.
 • MobileNet (ImageNet-pretrained) generalised far better than a CNN trained from scratch, and runs fast enough for a cheap phone.
 
-Try it on your phone: [Vercel link]
+Try it on your phone: https://boltanote.vercel.app
 Code, weights and my own test photos: https://github.com/Hassan-Ali-Mehdi-3024/boltanote
 Walkthrough video: [YouTube link]
 
