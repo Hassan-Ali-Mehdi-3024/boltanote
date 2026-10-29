@@ -119,4 +119,4 @@ slides = [
 
 assets = {"results/figures": "figures"}
 os.makedirs("docs/slides", exist_ok=True)
-build(slides, CSS, "docs/slides", voice=a.voice, assets=assets, title="BoltaNote_slides")
+build(slides, CSS, "docs/slides", voice=a.voice, assets=assets, title="BoltaNote_slides", author=author)
