@@ -27,6 +27,7 @@ async function init() {
     buildGallery();
     session = await ort.InferenceSession.create("model/boltanote.onnx", { executionProviders: ["wasm"], graphOptimizationLevel: "all" });
     state("Ready. Tap “Start camera”, or try a sample photo below.");
+    if (pendingStill) still(...pendingStill);  // a sample tapped while the model was loading
   } catch (e) {
     console.error(e);
     state("Could not load the model in this browser: " + e.message);
@@ -140,8 +141,9 @@ function stop() {
   state("Camera off.");
 }
 
+let pendingStill = null;
 async function still(url, label) {
-  if (!session) return state("The model is still loading…");
+  if (!session) { pendingStill = [url, label]; return state("The model is still loading… this photo will be read as soon as it is ready."); }
   if (running) stop();
   const img = $("#still");
   img.onload = async () => {
