@@ -1,7 +1,7 @@
 [
   {
     "slide": 1,
-    "say": "Assalam o alaikum. I'm Hassan Ali Mehdi, and this is BoltaNote, which means 'the talking note'. You point your phone at a Pakistani banknote, and it tells you the value out loud, in Urdu."
+    "say": "Assalam o alaikum. I'm Hassan Ali Mehdi, and this is a Pakistani banknote reader for blind people. You point your phone at a note, and it tells you the value out loud, in Urdu."
   },
   {
     "slide": 2,
@@ -9,7 +9,7 @@
   },
   {
     "slide": 3,
-    "say": "BoltaNote is just a web page. It reads the camera four times a second and speaks the value in Urdu or English, with a recorded voice, so it works even on phones that have no Urdu speech. It stays silent when it's unsure, because saying a wrong amount is worse than saying nothing. Once loaded, it works offline, and it also vibrates a code and works with screen readers."
+    "say": "The reader is just a web page. It reads the camera four times a second and speaks the value in Urdu or English, with a recorded voice, so it works even on phones that have no Urdu speech. It stays silent when it's unsure, because saying a wrong amount is worse than saying nothing. Once loaded, it works offline, and it also vibrates a code and works with screen readers."
   },
   {
     "slide": 4,

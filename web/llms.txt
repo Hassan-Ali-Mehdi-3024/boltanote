@@ -1,4 +1,4 @@
-# BoltaNote
+# Pakistani Banknote Reader
 
 > Talking Pakistani banknote reader for blind and low-vision people: phone camera -> note value spoken in Urdu or English, running in the browser. Deep Learning semester project by Hassan Ali Mehdi.
 

@@ -28,7 +28,7 @@ author = links["author"]
 CSS = """
 body{background:#e9e6dc}
 .slide{background:#fbfaf6;color:#111;padding:80px 120px 110px;display:flex;flex-direction:column;justify-content:center}
-.slide:after{content:"BoltaNote · بولتا نوٹ";position:absolute;left:110px;bottom:44px;font-size:22px;color:#8a8a80;font-family:Inter}
+.slide:after{content:"Pakistani Banknote Reader";position:absolute;left:110px;bottom:44px;font-size:22px;color:#8a8a80;font-family:Inter}
 .bar{position:absolute;left:0;top:0;bottom:0;width:22px;background:#ffd400}
 h1{font-size:96px;line-height:1.02;margin:0 0 24px;letter-spacing:-.03em;font-weight:900}
 h2{font-size:72px;line-height:1.08;margin:0 0 50px;letter-spacing:-.02em;font-weight:850}
@@ -61,24 +61,23 @@ third = (f"""<div class=stat><div class="n green">{pct(own['value_accuracy'], 0)
          f"""<div class=stat><div class="n green">{pct(ext['speaking']['wrong_value_rate'], 0) if ext else '–'}</div><div class=l>wrong amounts spoken on the photos by other people</div></div>""")
 
 slides = [
-    {"html": f"""<div class=bar></div><div class=grid2><div><div class=tag>DEEP LEARNING · SEMESTER PROJECT</div><h1>BoltaNote</h1>
-<div class=ur style="font-size:64px;margin:-10px 0 20px">بولتا نوٹ</div>
+    {"html": f"""<div class=bar></div><div class=grid2><div><div class=tag>DEEP LEARNING · SEMESTER PROJECT</div><h1 style="font-size:96px">Pakistani Banknote Reader</h1>
 <p class=lead>Point your phone at a banknote. It says the value out loud, in Urdu.</p>
 <p class=muted style="margin-top:60px">{author} · BSCS-7A · Superior University, Lahore<br>Instructor: Dr. Munir Ahmad</p></div>
 <div><img class=fig src="figures/augmentations.png" style="transform:rotate(-2deg)"></div></div>""",
-     "say": f"Assalam o alaikum. I'm {author}, and this is BoltaNote, which means 'the talking note'. You point your phone at a Pakistani banknote, and it tells you the value out loud, in Urdu."},
+     "say": f"Assalam o alaikum. I'm {author}, and this is a Pakistani banknote reader for blind people. You point your phone at a note, and it tells you the value out loud, in Urdu."},
     {"html": """<div class=bar></div><h2>A blind person pays in cash every day.<br>Every note is a question.</h2>
 <div class=grid3><div class="stat yellow"><div class=n>1.1M</div><div class=l>blind people in Pakistan (GBD 2017)</div></div>
 <div class=stat><div class=n>7</div><div class=l>notes in daily use, several close in size and colour</div></div>
 <div class=stat><div class="n red">Rs 4,500</div><div class=l>lost in one 500 / 5,000 mix-up</div></div></div>
 <p class=lead style="margin-top:50px">Today the answer is: ask a stranger, and trust them.</p>""",
      "say": "Pakistan has about one point one million blind people, and most daily payments are still made in cash. Our seven notes differ only a little in size, so a blind person usually has to ask a stranger which note is which, and trust the answer. Mixing up a five hundred and a five thousand costs four and a half thousand rupees."},
-    {"html": """<div class=bar></div><h2>BoltaNote: a web page, not an app</h2><div class=grid2><div><ul>
+    {"html": """<div class=bar></div><h2>A web page, not an app</h2><div class=grid2><div><ul>
 <li>Reads the live camera <b>4 times a second</b></li><li>Speaks the value in <b>Urdu</b> or English</li>
 <li>Stays <b>silent when unsure</b>: a wrong amount is worse than none</li><li>Works <b>offline</b> once loaded, any phone browser</li>
 <li>Vibration code and screen-reader support</li></ul></div>
 <div style="text-align:center"><div class=ur style="font-size:110px;font-weight:700">پانچ سو روپے</div><div class=muted style="font-size:34px">"Five hundred rupees"</div></div></div>""",
-     "say": "BoltaNote is just a web page. It reads the camera four times a second and speaks the value in Urdu or English, with a recorded voice, so it works even on phones that have no Urdu speech. It stays silent when it's unsure, because saying a wrong amount is worse than saying nothing. Once loaded, it works offline, and it also vibrates a code and works with screen readers."},
+     "say": "The reader is just a web page. It reads the camera four times a second and speaks the value in Urdu or English, with a recorded voice, so it works even on phones that have no Urdu speech. It stays silent when it's unsure, because saying a wrong amount is worse than saying nothing. Once loaded, it works offline, and it also vibrates a code and works with screen readers."},
     {"html": f"""<div class=bar></div><h2>Data: 3,611 real phone photos, 15 classes</h2><div class=grid2><div><ul>
 <li>Kaggle <b>Pakistan Image Currency Dataset</b> (CC0)</li><li>7 notes × <b>front and back</b> = 14 classes</li>
 <li>+ <b>"no note"</b>: 280 photos + 1,000 everyday Imagenette photos</li><li>Folded, in hand, half visible, on bedsheets</li>

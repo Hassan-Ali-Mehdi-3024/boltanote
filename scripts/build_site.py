@@ -114,7 +114,7 @@ if ext:
 if own:
     sentence += (f" On our own {own['photos']} photos it reaches {pct(own['value_accuracy'])}, saying a wrong value on {pct(own['wrong_value_said'])} of them.")
 
-jsonld = {"@context": "https://schema.org", "@type": "SoftwareSourceCode", "name": "BoltaNote", "description": "Talking Pakistani banknote reader for blind people (MobileNet, ONNX Runtime Web).",
+jsonld = {"@context": "https://schema.org", "@type": "SoftwareSourceCode", "name": "Pakistani Banknote Reader", "description": "Talking Pakistani banknote reader for blind people (MobileNet, ONNX Runtime Web).",
           "codeRepository": links.get("github"), "programmingLanguage": ["Python", "JavaScript"], "author": {"@type": "Person", "name": links.get("author")}, "license": "https://opensource.org/licenses/MIT"}
 fill = {
     "GITHUB": links["github"], "AUTHOR": html.escape(links["author"]), "MONTH": links.get("month", "November 2026"),
@@ -133,7 +133,7 @@ assert "{{" not in page, [l for l in page.splitlines() if "{{" in l]
 open(f"{out}/index.html", "w", encoding="utf-8").write(page)
 
 project = {
-    "project": "BoltaNote", "task": card["task"], "author": links["author"], "course": "Deep Learning, Superior University (Dr. Munir Ahmad)",
+    "project": "Pakistani Banknote Reader", "task": card["task"], "author": links["author"], "course": "Deep Learning, Superior University (Dr. Munir Ahmad)",
     "links": {k: links.get(k) for k, _, _ in LINKS if links.get(k) and exists_in_repo(links[k])},
     "datasets": card["datasets"], "classes": card["classes"], "values": card["values"], "input": card["input"], "outputs": card["outputs"],
     "speaking": {k: card["speaking"][k] for k in ("rule", "threshold", "threshold_chosen_on")},
@@ -148,7 +148,7 @@ project = {
 }
 json.dump(project, open(f"{out}/project.json", "w"), indent=2, ensure_ascii=False)
 
-llms = f"""# BoltaNote
+llms = f"""# Pakistani Banknote Reader
 
 > Talking Pakistani banknote reader for blind and low-vision people: phone camera -> note value spoken in Urdu or English, running in the browser. Deep Learning semester project by {links['author']}.
 

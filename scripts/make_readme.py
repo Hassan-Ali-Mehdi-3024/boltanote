@@ -25,7 +25,7 @@ example = subprocess.run([sys.executable, "predict.py", "samples/500_front_1.jpg
 example = json.dumps({k: v for k, v in json.loads(example).items() if k != "file"}, indent=1, ensure_ascii=False)
 n_own = sum(len([f for f in os.listdir(os.path.join("data/own_photos", d))]) for d in os.listdir("data/own_photos")) if os.path.isdir("data/own_photos") else 0
 
-md = f"""# BoltaNote · بولتا نوٹ
+md = f"""# Pakistani Banknote Reader
 
 [![test](https://github.com/{slug}/actions/workflows/test.yml/badge.svg)](https://github.com/{slug}/actions/workflows/test.yml)
 ![license](https://img.shields.io/badge/code-MIT-blue) ![data](https://img.shields.io/badge/data-CC0%20%2B%20own%20photos-yellow)

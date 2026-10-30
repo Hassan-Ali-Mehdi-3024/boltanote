@@ -1,11 +1,11 @@
 Slide 1
-Assalam o alaikum. I'm Hassan Ali Mehdi, and this is BoltaNote, which means 'the talking note'. You point your phone at a Pakistani banknote, and it tells you the value out loud, in Urdu.
+Assalam o alaikum. I'm Hassan Ali Mehdi, and this is a Pakistani banknote reader for blind people. You point your phone at a note, and it tells you the value out loud, in Urdu.
 
 Slide 2
 Pakistan has about one point one million blind people, and most daily payments are still made in cash. Our seven notes differ only a little in size, so a blind person usually has to ask a stranger which note is which, and trust the answer. Mixing up a five hundred and a five thousand costs four and a half thousand rupees.
 
 Slide 3
-BoltaNote is just a web page. It reads the camera four times a second and speaks the value in Urdu or English, with a recorded voice, so it works even on phones that have no Urdu speech. It stays silent when it's unsure, because saying a wrong amount is worse than saying nothing. Once loaded, it works offline, and it also vibrates a code and works with screen readers.
+The reader is just a web page. It reads the camera four times a second and speaks the value in Urdu or English, with a recorded voice, so it works even on phones that have no Urdu speech. It stays silent when it's unsure, because saying a wrong amount is worse than saying nothing. Once loaded, it works offline, and it also vibrates a code and works with screen readers.
 
 Slide 4
 I trained on a public dataset of three thousand six hundred real phone photos: seven notes, front and back, many folded or half visible. I added a 'no note' class with a thousand everyday photos, so the model learns when to stay quiet.

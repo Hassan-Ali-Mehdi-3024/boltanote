@@ -1,4 +1,4 @@
-// BoltaNote in the browser. About four times a second the whole camera frame is squeezed to
+// Pakistani Banknote Reader in the browser. About four times a second the whole camera frame is squeezed to
 // 224x224 (the same preprocessing as predict.py) and run through the model with ONNX Runtime Web.
 // Front + back probabilities are added per note value. It speaks only when the same value has
 // been on top, above the threshold, for 3 frames in a row; it repeats after 6 s, or straight away

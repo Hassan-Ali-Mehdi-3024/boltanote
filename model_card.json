@@ -1,5 +1,5 @@
 {
-  "name": "BoltaNote",
+  "name": "Pakistani Banknote Reader",
   "task": "Pakistani banknote recognition for blind and low-vision people",
   "classes": [
     "10_front",

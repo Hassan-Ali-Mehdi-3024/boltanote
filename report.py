@@ -255,7 +255,7 @@ def main():
 
     b = runs[best]
     card = {
-        "name": "BoltaNote", "task": "Pakistani banknote recognition for blind and low-vision people",
+        "name": "Pakistani Banknote Reader", "task": "Pakistani banknote recognition for blind and low-vision people",
         "classes": CLASSES, "values": GROUPS, "class_to_value": {c: c.split("_")[0] for c in CLASSES},
         "input": {"name": "image", "shape": [1, 3, SIZE, SIZE], "dtype": "float32", "range": [0, 1], "layout": "RGB, channels first",
                   "preprocessing": "whole photo, EXIF-rotated upright, resized (squeezed) to 224x224 bilinear, divide by 255; normalisation is inside the model"},

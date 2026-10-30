@@ -1,4 +1,4 @@
-# BoltaNote · بولتا نوٹ
+# Pakistani Banknote Reader
 
 [![test](https://github.com/Hassan-Ali-Mehdi-3024/boltanote/actions/workflows/test.yml/badge.svg)](https://github.com/Hassan-Ali-Mehdi-3024/boltanote/actions/workflows/test.yml)
 ![license](https://img.shields.io/badge/code-MIT-blue) ![data](https://img.shields.io/badge/data-CC0%20%2B%20own%20photos-yellow)

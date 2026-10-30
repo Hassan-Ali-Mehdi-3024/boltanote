@@ -1,6 +1,6 @@
 About 1.1 million people in Pakistan are blind, and most payments are still cash. For them, every banknote is a question: is this 500 or 5,000? The usual answer is to ask a stranger and trust them.
 
-For my Deep Learning semester project I built BoltaNote (بولتا نوٹ, "the talking note"): point your phone at a Pakistani note and it says the value out loud, in Urdu or English. It's a web page, so there's nothing to install, and it works offline once loaded.
+For my Deep Learning semester project I built a Pakistani banknote reader for blind people: point your phone at a Pakistani note and it says the value out loud, in Urdu or English. It's a web page, so there's nothing to install, and it works offline once loaded.
 
 What I learned building it:
 • Check your test data first: 339 of 402 test photos in a second public currency dataset were near-copies of the first. Only 63 were genuinely new.

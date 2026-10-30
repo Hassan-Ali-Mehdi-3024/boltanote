@@ -1,4 +1,4 @@
-"""Train one BoltaNote model and test it.
+"""Train one banknote model and test it.
 
     python train.py --data /path/to/data --model mobilenetv4_conv_medium --out outputs
 
