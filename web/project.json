@@ -3,7 +3,7 @@
   "task": "Pakistani banknote recognition for blind and low-vision people",
   "author": "Hassan Ali Mehdi",
   "course": "Deep Learning, Superior University (Dr. Munir Ahmad)",
-  "updated": "2026-10-30",
+  "updated": "2026-10-31",
   "links": {
     "site": "https://boltanote.vercel.app",
     "github": "https://github.com/Hassan-Ali-Mehdi-3024/boltanote",
@@ -33,7 +33,7 @@
     },
     "github": {
       "title": "GitHub repository",
-      "what": "code, weights, splits, notebook; second copy is the source code as a zip",
+      "what": "code, weights, splits, notebook; the alternate is the source code as a zip",
       "urls": [
         "https://github.com/Hassan-Ali-Mehdi-3024/boltanote",
         "https://boltanote.vercel.app/downloads/boltanote-source.zip"
@@ -41,7 +41,7 @@
     },
     "youtube": {
       "title": "Video presentation (YouTube)",
-      "what": "under four minutes, in my own voice; also on this site, and as a 4K download",
+      "what": "under four minutes, in my own voice; alternates: on this site, and a 4K download",
       "urls": [
         "https://youtu.be/P0O-qhMldGI",
         "https://boltanote.vercel.app/video/pakistani-banknote-reader-film.mp4",
@@ -339,7 +339,7 @@
     },
     {
       "question": "Where are the code, weights and report?",
-      "answer": "The code, weights and data splits are at https://github.com/Hassan-Ali-Mehdi-3024/boltanote, and the report is at https://boltanote.vercel.app/report.pdf. Every link, with a second copy, is in the Everything, linked section of this page."
+      "answer": "The code, weights and data splits are at https://github.com/Hassan-Ali-Mehdi-3024/boltanote, and the report is at https://boltanote.vercel.app/report.pdf. Every link, with its alternate, is in the links section of this page."
     },
     {
       "question": "Is there a LinkedIn post?",

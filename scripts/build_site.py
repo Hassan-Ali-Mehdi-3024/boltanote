@@ -39,7 +39,7 @@ dedupe = json.load(open("results/dedupe.json")) if os.path.exists("results/dedup
 
 SITE, PAGES, REL, GH = links["site"].rstrip("/"), links["pages"].rstrip("/"), links["release"].rstrip("/"), links["github"]
 RAW = f"{GH}/raw/main"
-TODAY = datetime.date.today().isoformat()
+TODAY = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=5))).date().isoformat()  # Pakistan time
 NAME = "Pakistani Banknote Reader"
 TITLE = "Pakistani Banknote Reader for Blind People: Speaks in Urdu"
 DESC = "Free web app that reads Pakistani banknotes through the phone camera and says the value aloud in Urdu or English. No install, works offline, made for blind users."
@@ -53,13 +53,16 @@ out = "web"
 if os.path.exists(out):
     shutil.rmtree(out)
 os.makedirs(f"{out}/model")
-for f in ("style.css", "app.js", "404.html", "og.png"):
+for f in ("style.css", "app.js", "page.js", "404.html", "og.png"):
     shutil.copy(f"site/{f}", out)
-for d in ("audio", "vendor", "icons", "video"):
+for d in ("audio", "vendor", "icons", "video", "fonts", "art"):
     shutil.copytree(f"site/{d}", f"{out}/{d}")
 shutil.copy("weights/boltanote.onnx", f"{out}/model/boltanote.onnx")
 shutil.copytree("results/figures", f"{out}/figures")
 shutil.copytree("samples", f"{out}/samples")
+for p in glob.glob(f"{out}/samples/*.jpg"):  # the web copies of very large test photos; the model only ever sees 224 x 224
+    if os.path.getsize(p) > 400_000:
+        im = Image.open(p).convert("RGB"); im.thumbnail((1280, 1280), Image.LANCZOS); im.save(p, quality=85, optimize=True)
 for key, src, dst in (("report", "docs/BoltaNote_report.pdf", "report.pdf"), ("slides", "docs/slides/BoltaNote_slides.pdf", "slides.pdf")):
     if os.path.exists(src):  # report and slides are served by the site too
         shutil.copy(src, f"{out}/{dst}")
@@ -87,8 +90,8 @@ for m, r in runs.items():
 # key, title, what it is, every copy (first = the main one). Copies live on separate hosts wherever the file size allows.
 COPIES = [
     ("site", "This website", "the live reader and this page (Vercel, GitHub Pages)", [SITE, f"{PAGES}/"]),
-    ("github", "GitHub repository", "code, weights, splits, notebook; second copy is the source code as a zip", [GH, f"{SITE}/downloads/boltanote-source.zip"]),
-    ("youtube", "Video presentation (YouTube)", "under four minutes, in my own voice; also on this site, and as a 4K download", [links["youtube"], f"{SITE}/{FILM}", f"{REL}/Pakistani_Banknote_Reader_film_4K60.mp4"]),
+    ("github", "GitHub repository", "code, weights, splits, notebook; the alternate is the source code as a zip", [GH, f"{SITE}/downloads/boltanote-source.zip"]),
+    ("youtube", "Video presentation (YouTube)", "under four minutes, in my own voice; alternates: on this site, and a 4K download", [links["youtube"], f"{SITE}/{FILM}", f"{REL}/Pakistani_Banknote_Reader_film_4K60.mp4"]),
     ("report", "Report (PDF)", "full write-up", [links["report"], f"{RAW}/docs/BoltaNote_report.pdf"]),
     ("report_web", "Report (web page)", "the same report, as a page", [f"{SITE}/report/", f"{PAGES}/report/"]),
     ("slides", "Presentation slides (PDF)", "the deck", [links["slides"], f"{RAW}/docs/slides/BoltaNote_slides.pdf"]),
@@ -107,13 +110,19 @@ if own and os.path.isdir("data/own_photos"):
     COPIES.insert(11, ("own_photos", "Our own photos", "real-world test set, in the repo", [links["own_photos"], links["release_page"]]))
 
 
-def link_card(key, title, desc, urls):
-    copies = "".join(f'<a href="{html.escape(u)}"><b>Copy {i}</b> {html.escape(u)}</a>' for i, u in enumerate(urls, 1))
-    return f'<div class="link" id="l-{key}"><h3>{html.escape(title)}</h3><p>{html.escape(desc)}</p>{copies}</div>'
+def link_row(key, title, desc, urls):
+    labels = ["Main link", "Alternate link", "Alternate link 2"]
+    rows = "".join(f'<a{" class=alt" if i else ""} href="{html.escape(u)}"><b>{labels[i]}</b><span>{html.escape(u)}</span></a>' for i, u in enumerate(urls))
+    return f'<div class="link" id="l-{key}"><div class="link-what"><h4>{html.escape(title)}</h4><p>{html.escape(desc)}</p></div><div class="link-urls">{rows}</div></div>'
 
 
-cards = [link_card(*c) for c in COPIES]
-cards.insert(3, f'<div class="link note" id="linkedin"><h3>LinkedIn post</h3><p>{html.escape(NOTE)}</p></div>')
+GROUPS = [("Try and watch", ["site", "youtube", "LINKEDIN"]), ("Read", ["report", "report_web", "slides"]),
+          ("Code and model", ["github", "weights_onnx", "weights_torchscript", "weights_pt", "notebook", "model_card", "project_json"]),
+          ("Data", ["dataset", "dataset_external", "dataset_none", "own_photos", "splits"])]
+by_key = {c[0]: c for c in COPIES}
+linkedin_row = f'<div class="link statement" id="linkedin"><div class="link-what"><h4>LinkedIn post</h4><p>no post</p></div><p class="note-text">{html.escape(NOTE)}</p></div>'
+cards = ["".join([f'<div class="link-group"><h3>{g}</h3>'] + [linkedin_row if k == "LINKEDIN" else link_row(*by_key[k]) for k in keys if k == "LINKEDIN" or k in by_key] + ["</div>"]) for g, keys in GROUPS]
+assert sum(k in by_key for _, keys in GROUPS for k in keys) == len(COPIES)
 
 limits = [
     "Trained on photos of a few physical notes per value, mostly on similar indoor backgrounds; very worn, torn or taped notes are under-represented.",
@@ -130,12 +139,10 @@ if own:
     own_text = (f"{own['photos']} photos of our own notes, taken with a phone in real rooms (folded, in hand, dim light, different backgrounds), "
                 f"never used for training or for any choice. Sorted by value in <a href=\"{links['github']}/tree/main/data/own_photos\">data/own_photos</a>.")
     own_fig = '<figure><img src="figures/own_photos.png" alt="Share of our own photos read correctly, per note value" loading="lazy"><figcaption>Our own photos: per-value accuracy.</figcaption></figure>'
-    own_card = f'<div class="card"><h3>4. Our own photos: the real test</h3><p class="meta">{own_text}</p></div>'
+    own_card = f'<div><h3>Our own photos</h3><p>The real test. {own_text}</p></div>'
     own_row = f'<tr><td>Our own photos</td><td>{own["photos"]}</td><td>does it work on real notes, in real rooms?</td></tr>'
-    fourth = f'<div class="card stat"><div class="num">{pct(own["value_accuracy"])}</div><div class="lbl">on our own photos ({own["photos"]} photos)</div></div>'
 else:
     own_fig, own_card, own_row = "", "", ""
-    fourth = f'<div class="card stat"><div class="num">{ext_wrong} wrong</div><div class="lbl">amounts spoken on those {ext["n"]} photos (silent on {ext_silent} of them)</div></div>'
 
 sentence = (f"The deployed model is <b>{NICE[best]}</b>, chosen on validation photos. On {t['n']} unseen test photos it names the note value correctly "
             f"{pct(t['value_accuracy'])} of the time; at the speaking threshold it would say a wrong value on {pct(t['speaking']['wrong_value_rate'])} of photos "
@@ -160,15 +167,28 @@ FAQ = [
     ("Which model does it use?", f"{NICE[best]}, pretrained on ImageNet and fine-tuned to 15 classes: seven notes, front and back, plus \"no note\". It runs with ONNX Runtime Web and takes about {b['onnx_cpu_ms']:.0f} ms per photo on a CPU. It was compared with a CNN trained from scratch and MobileNetV4."),
     ("What data was it trained on?", f"The Pakistan Image Currency Dataset (CC0) of 3,611 phone photos, plus 1,000 Imagenette photos for the \"no note\" class. A hash check found {dedupe['roboflow_dropped']} of {dedupe['roboflow_total']} photos in a second public dataset were near-copies of the first, so only the {dedupe['roboflow_kept']} new ones were used as the external test."),
     ("Who made it?", f"{links['author']}, as a Deep Learning semester project at Superior University, Lahore (BSCS-7A), under Dr. Munir Ahmad, {links.get('month', 'November 2026')}."),
-    ("Where are the code, weights and report?", f"The code, weights and data splits are at {GH}, and the report is at {SITE}/report.pdf. Every link, with a second copy, is in the Everything, linked section of this page."),
+    ("Where are the code, weights and report?", f"The code, weights and data splits are at {GH}, and the report is at {SITE}/report.pdf. Every link, with its alternate, is in the links section of this page."),
     ("Is there a LinkedIn post?", f"No. {NOTE}"),
 ]
 autolink = lambda s: re.sub(r"https?://[^\s,;]+?(?=[.,;]?(?:\s|$))", lambda m: f'<a href="{m.group(0)}">{m.group(0)}</a>', html.escape(s, quote=False))
-faq_html = "".join(f"<div><h3>{html.escape(q)}</h3><p>{autolink(a)}</p></div>" for q, a in FAQ)
+faq_html = "".join(f'<details class="qa"{" open" if i < 3 else ""}><summary><h3>{html.escape(q)}</h3></summary><p>{autolink(a)}</p></details>' for i, (q, a) in enumerate(FAQ))
+
+# Seven notes to scale, in Rs order. Each one plays the same recorded voice the reader uses.
+NOTES = [("10", 115, "#6f9466"), ("20", 123, "#d9823f"), ("50", 131, "#8d4f9d"), ("100", 139, "#d2574f"), ("500", 147, "#2f8a5c"), ("1000", 155, "#3f66b5"), ("5000", 163, "#c99a3a")]
+note_face = f'''<canvas class="note-rose" data-color="120,84,12" data-alpha=".62"></canvas><i class="ur" lang="ur">{card['speaking']['phrases']['5000'][0]}</i>'''
+note_stack = "".join(f'''<button type="button" class="note" data-v="{v}" data-ur="{card['speaking']['phrases'][v][0]}" style="--mm:{mm};--i:{i};--c:{col}" aria-label="Rs {int(v):,}: hear it in Urdu"><b>Rs {int(v):,}</b><span>{mm} mm</span>{note_face if v == "5000" else ""}</button>''' for i, (v, mm, col) in enumerate(NOTES))
+
+
+def bar(label, v, cls):
+    return f'''<div class="bar-l {cls}"><span>{label}</span><div class="bar-t"><i style="--v:{max((v - .7) / .3, 0):.4f}"></i></div><b>{pct(v)}</b></div>'''
+
+
+ORIGIN = {"cnn_scratch": "Random weights, 5 conv blocks", "mobilenetv3_large": "ImageNet start, 2019", "mobilenetv4_conv_medium": "ImageNet start, 2024"}
+model_rows = "".join(f'''<div class="model-row{" deployed" if m == best else ""}"><div><h3>{NICE[m]}</h3><small>{ORIGIN[m]}, {r["params_million"]}M params{". Deployed." if m == best else ""}</small></div><div class="bars">{bar("Same dataset", r["test"]["value_accuracy"], "same")}{bar("Other people", r["external"]["value_accuracy"], "other")}</div><div class="speed">{r["onnx_cpu_ms"]:.0f} <small>ms</small></div></div>''' for m, r in runs.items())
 
 transcript = open("site/video/transcript.txt", encoding="utf-8").read().strip()
 transcript_html = "".join(f"<p>{html.escape(p.strip())}</p>" for p in transcript.split("\n\n"))
-video_desc = (f'The whole project in my own voice: the problem, the data, the honest numbers and a demo. Also on <a href="{links["youtube"]}">YouTube</a>, '
+video_desc = (f'In my own voice: the problem, the data, the honest numbers and a demo. Also on <a href="{links["youtube"]}">YouTube</a>, '
               f'or <a href="{REL}/Pakistani_Banknote_Reader_film_4K60.mp4">download it in 4K</a>.')
 
 author = {"@type": "Person", "@id": f"{SITE}/#author", "name": links["author"], "url": GH.rsplit("/", 1)[0], "sameAs": [GH.rsplit("/", 1)[0], links["youtube_channel"]],
@@ -176,7 +196,7 @@ author = {"@type": "Person", "@id": f"{SITE}/#author", "name": links["author"], 
 jsonld = {"@context": "https://schema.org", "@graph": [
     {"@type": "WebSite", "@id": f"{SITE}/#website", "url": f"{SITE}/", "name": NAME, "inLanguage": "en", "publisher": {"@id": f"{SITE}/#author"}},
     {"@type": "WebPage", "@id": f"{SITE}/#page", "url": f"{SITE}/", "name": TITLE, "description": DESC, "isPartOf": {"@id": f"{SITE}/#website"}, "inLanguage": "en", "datePublished": "2026-10-28", "dateModified": TODAY,
-     "about": {"@id": f"{SITE}/#app"}, "mainEntity": {"@id": f"{SITE}/#app"}, "primaryImageOfPage": OG, "speakable": {"@type": "SpeakableSpecification", "cssSelector": ["#summary", ".faq p"]},
+     "about": {"@id": f"{SITE}/#app"}, "mainEntity": {"@id": f"{SITE}/#app"}, "primaryImageOfPage": OG, "speakable": {"@type": "SpeakableSpecification", "cssSelector": ["#summary", ".qa p"]},
      "hasPart": [{"@type": "Report", "name": f"{NAME}: project report", "url": links["report"], "encodingFormat": "application/pdf", "author": {"@id": f"{SITE}/#author"}},
                  {"@type": "PresentationDigitalDocument", "name": f"{NAME}: slides", "url": links["slides"], "encodingFormat": "application/pdf", "author": {"@id": f"{SITE}/#author"}}]},
     {"@type": "WebApplication", "@id": f"{SITE}/#app", "name": NAME, "alternateName": ["Pakistani currency reader for blind people", "Talking banknote reader"], "url": f"{SITE}/", "description": DESC,
@@ -225,11 +245,12 @@ HEAD = f"""<title>{html.escape(TITLE)}</title>
 <meta name="twitter:image:alt" content="{html.escape(OG_ALT)}">"""
 fill = {
     "GITHUB": links["github"], "AUTHOR": html.escape(links["author"]), "MONTH": links.get("month", "November 2026"), "TODAY": TODAY, "HEAD": HEAD,
-    "THRESHOLD_PCT": pct(b["speaking_threshold"], 0), "TEST_ACC": pct(t["value_accuracy"]), "WRONG": pct(t["speaking"]["wrong_value_rate"]),
-    "EXT_ACC": pct(ext["value_accuracy"]) if ext else "–", "OWN_FIGURE": own_fig, "OWN_CARD": own_card, "OWN_ROW": own_row, "FOURTH_STAT": fourth,
-    "OWN_CREDIT": ", and our own photos" if own else "", "DEDUPE_GRID": "two" if own else "one",
-    "DATA_H2": "Data: public photos, checked for copies, plus our own" if own else "Data: public photos, checked for copies",
-    "DATA_SUB": "Three public datasets and one we collected ourselves." if own else "Three public datasets.",
+    "THRESHOLD_PCT": pct(b["speaking_threshold"], 0),
+    "OWN_FIGURE": own_fig, "OWN_CARD": own_card, "OWN_ROW": own_row, "OWN_CREDIT": ", and our own photos" if own else "",
+    "TEST_ACC_N": f"{t['value_accuracy'] * 100:.1f}", "EXT_ACC_N": f"{ext['value_accuracy'] * 100:.1f}", "THRESHOLD": f"{b['speaking_threshold']:.2f}", "N_STRESS": f"{n_val * 4:,}",
+    "EXT_RIGHT": round(ext["value_accuracy"] * ext["n"]), "EXT_MISS": ext["n"] - round(ext["value_accuracy"] * ext["n"]), "EXT_WRONG": ext_wrong, "EXT_SILENT": ext_silent, "EXT_SPOKE": ext["n"] - ext_silent - ext_wrong,
+    "NOTE_STACK": note_stack, "MODEL_ROWS": model_rows, "SITE": SITE, "PAGES": PAGES, "SITE_SHORT": SITE.replace("https://", ""), "PAGES_SHORT": PAGES.replace("https://", ""),
+    "VIDEO_SOURCES": f'''<source src="{FILM}" type="video/mp4"><source src="{PAGES}/{FILM}" type="video/mp4"><source src="{SITE}/{FILM}" type="video/mp4">''',
     "N_TRAIN": f"{count('train'):,}", "N_VAL": f"{count('val'):,}", "N_TEST": f"{count('test'):,}",
     "RF_TOTAL": dedupe["roboflow_total"], "RF_DROPPED": dedupe["roboflow_dropped"], "RF_KEPT": dedupe["roboflow_kept"],
     "RESULTS_ROWS": "\n    ".join(rows), "RESULTS_SENTENCE": sentence, "LINK_CARDS": "".join(cards), "FAQ": faq_html,
@@ -246,7 +267,7 @@ assert "{{" not in page, [l for l in page.splitlines() if "{{" in l]
 def sized(m):
     """Give each figure its real size, so the page doesn't jump while images load."""
     w, h = Image.open(f"{out}/{m.group(1)}").size
-    return f'<img src="{m.group(1)}" width="{w}" height="{h}" decoding="async"'
+    return f'<img src="{m.group(1)}" width="{w}" height="{h}"'
 
 
 page = re.sub(r'<img src="(figures/[^"]+)"', sized, page)
@@ -260,6 +281,7 @@ rp = f"{out}/report/index.html"
 if os.path.exists(rp):
     r = open(rp, encoding="utf-8").read()
     assert "<title>Pakistani Banknote Reader: report</title>" in r
+    r = r.replace("<body>", '<body><p style="font:600 14px Inter,system-ui,sans-serif;margin:14px 0"><a href="../" style="color:#0a5c36">← Pakistani Banknote Reader</a></p>', 1)
     r = r.replace("<title>Pakistani Banknote Reader: report</title>", f"""<title>Pakistani Banknote Reader: Full Project Report</title>
 <meta name="description" content="{report_desc}">
 <link rel="canonical" href="{SITE}/report/">
@@ -298,14 +320,14 @@ project = {
 }
 json.dump(project, open(f"{out}/project.json", "w"), indent=2, ensure_ascii=False)
 
-copy_lines = "\n".join(f"- [{title}]({urls[0]}): {desc}. Second copy: {urls[1]}" + (f" Third copy: {urls[2]}" if len(urls) > 2 else "") for _, title, desc, urls in COPIES)
+copy_lines = "\n".join(f"- [{title}]({urls[0]}): {desc}. Alternate: {urls[1]}" + (f" Alternate 2: {urls[2]}" if len(urls) > 2 else "") for _, title, desc, urls in COPIES)
 llms = f"""# {NAME}
 
 > A free web app for blind and low-vision people in Pakistan: point a phone camera at a banknote and it says the value out loud in Urdu or English. It runs in the browser, works offline after the first visit, and uploads nothing. Deep Learning semester project by {links['author']}, Superior University, Lahore, under Dr. Munir Ahmad.
 
 Full text for AI engines: {SITE}/llms-full.txt
 
-## Links (each with a second copy)
+## Links (each with an alternate)
 {copy_lines}
 - LinkedIn post: none. {NOTE}
 
@@ -340,7 +362,7 @@ video_xml = (f"<video:video><video:thumbnail_loc>{OG}</video:thumbnail_loc><vide
 pages = [(f"{SITE}/", video_xml), (f"{SITE}/report/", ""), (f"{SITE}/report.pdf", ""), (f"{SITE}/slides.pdf", "")]
 open(f"{out}/sitemap.xml", "w", encoding="utf-8").write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">\n'
     + "".join(f"<url><loc>{u}</loc><lastmod>{TODAY}</lastmod>{x}</url>\n" for u, x in pages) + "</urlset>\n")
-json.dump({"name": NAME, "short_name": "Banknote Reader", "description": DESC, "lang": "en", "start_url": "./", "scope": "./", "display": "standalone", "background_color": "#fbfaf6", "theme_color": "#ffd400", "categories": ["accessibility", "utilities"],
+json.dump({"name": NAME, "short_name": "Banknote Reader", "description": DESC, "lang": "en", "start_url": "./", "scope": "./", "display": "standalone", "background_color": "#f5f1e3", "theme_color": "#f5f1e3", "categories": ["accessibility", "utilities"],
            "icons": [{"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable"}, {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"}]},
           open(f"{out}/site.webmanifest", "w"), indent=2)
 week = [{"key": "Cache-Control", "value": "public, max-age=604800"}]
@@ -362,8 +384,8 @@ open(f"{out}/vercel.json", "w").write(json.dumps({
 }, indent=2))
 
 # The offline worker saves exactly what the reader needs; its version changes whenever any of that changes.
-core = ["app.js", "style.css", "favicon.svg", "site.webmanifest", "model_card.json", "samples/samples.json", "model/boltanote.onnx", "icons/icon-192.png"]
-core += [os.path.relpath(p, out) for pat in ("vendor/ort/*", "audio/*/*.mp3", "samples/*.jpg") for p in sorted(glob.glob(f"{out}/{pat}"))]
+core = ["app.js", "page.js", "style.css", "art/note-500.jpg", "art/note-5000.jpg", "favicon.svg", "site.webmanifest", "model_card.json", "samples/samples.json", "model/boltanote.onnx", "icons/icon-192.png"]
+core += [os.path.relpath(p, out) for pat in ("fonts/*", "vendor/ort/*", "audio/*/*.mp3", "samples/*.jpg") for p in sorted(glob.glob(f"{out}/{pat}"))]
 digest = hashlib.sha256(open(f"{out}/index.html", "rb").read())
 for f in core:
     digest.update(open(f"{out}/{f}", "rb").read())

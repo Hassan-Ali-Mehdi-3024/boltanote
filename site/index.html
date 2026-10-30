@@ -4,36 +4,51 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 {{HEAD}}
-<meta name="theme-color" content="#ffd400">
+<meta name="theme-color" content="#f5f1e3">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="icons/icon-192.png" type="image/png" sizes="192x192">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <link rel="alternate" type="application/json" href="project.json" title="Machine-readable project summary">
 <link rel="alternate" type="text/plain" href="llms.txt" title="Guide for AI crawlers">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu&display=swap" rel="stylesheet">
+<link rel="preload" href="fonts/BricolageGrotesque-var-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="style.css">
 <script type="application/ld+json">{{JSONLD}}</script>
 </head>
 <body>
 <a class="skip" href="#reader">Skip to the note reader</a>
-<header class="top"><div class="wrap">
-  <a class="brand" href="#">Pakistani Banknote Reader</a>
-  <nav><a href="#reader">Reader</a><a href="#film">Video</a><a href="#problem">Problem</a><a href="#data">Data</a><a href="#model">Model</a><a href="#results">Results</a><a href="#faq">FAQ</a><a href="#links">Links</a></nav>
-</div></header>
+<div class="thread" aria-hidden="true"><i id="thread"></i></div>
+<header class="top">
+  <a class="brand" href="#top">{{AUTHOR}}<span class="opt"> · Deep Learning project</span></a>
+  <nav aria-label="Sections"><a href="#reader">Reader</a><a href="#film">Video</a><a href="#problem">Problem</a><a href="#data">Data</a><a href="#model">Model</a><a href="#results">Results</a><a href="#faq">FAQ</a><a href="#links">Links</a></nav>
+</header>
 
-<main>
-<div class="wrap hero">
-  <h1>Pakistani Banknote Reader for blind people</h1>
-  <p class="tagline">Point your phone at a note. It says the value out loud.</p>
-  <p class="ur" lang="ur">نوٹ کیمرے کے سامنے رکھیں، یہ بول کر بتائے گا کہ کتنے روپے کا ہے</p>
-  <p class="lead" id="summary">A free web app that reads Pakistani banknotes out loud for blind and low-vision people. It recognises all seven notes in circulation (Rs 10 to Rs 5,000), front or back, folded or upside down, and speaks in Urdu or English. It runs inside the browser, works offline after the first visit, and needs no app, no account and no upload.</p>
+<main id="top">
+<div class="hero">
+  <div class="hero-copy">
+    <h1><span class="ln"><span>Pakistani</span></span> <span class="ln"><span>Banknote</span></span> <span class="ln"><span>Reader</span></span></h1>
+    <p class="tagline">Point your phone at a note. It says <mark>the value out loud.</mark></p>
+    <p class="ur hero-ur" lang="ur" dir="rtl">نوٹ کیمرے کے سامنے رکھیں، یہ بول کر بتائے گا کہ کتنے روپے کا ہے</p>
+    <p class="lead" id="summary">A free web app that reads Pakistani banknotes out loud for blind and low-vision people. It recognises all seven notes in circulation (Rs 10 to Rs 5,000), front or back, folded or upside down, and speaks in Urdu or English. It runs inside the browser, works offline after the first visit, and needs no app, no account and no upload.</p>
+    <div class="cta"><a class="go" id="hero-start" href="#reader">Start camera</a><a class="watch" href="#film">Watch the film, 3:54</a></div>
+  </div>
+  <div class="hero-art" aria-hidden="true">
+    <canvas class="rosette" data-color="255,212,0" data-alpha=".42" data-draw="1"></canvas>
+    <div class="rings"><i></i><i></i><i></i></div>
+    <div class="device"><div class="scr">
+      <div class="shot"><img class="a" src="art/note-5000.jpg" width="832" height="624" alt="" fetchpriority="high"><img class="b" src="art/note-500.jpg" width="832" height="624" alt=""><i class="sweep"></i><i class="frame"></i></div>
+      <div class="said"><div class="said-a"><b>Rs 5,000</b><span class="ur" lang="ur">پانچ ہزار روپے</span></div><div class="said-b"><b>Rs 500</b><span class="ur" lang="ur">پانچ سو روپے</span></div><div class="meter"><i></i></div></div>
+    </div></div>
+  </div>
 </div>
 
-<div class="wrap" id="reader">
-  <div class="reader reader-grid">
-    <div>
+<section class="dark band" id="reader"><div class="wrap">
+  <div class="split-head">
+    <h2>Try it now.</h2>
+    <p>Use your camera, upload a photo, or tap a test photo. Everything runs on this device, so no picture ever leaves it.</p>
+  </div>
+  <div class="reader-grid">
+    <div class="stage-col">
       <div class="stage" aria-hidden="true">
         <div class="placeholder" id="placeholder">Camera preview appears here</div>
         <video id="video" playsinline muted hidden></video>
@@ -49,7 +64,7 @@
         <div class="conf" aria-hidden="true"><div id="conf"></div></div>
         <div class="state" id="prob"></div>
       </div>
-      <div class="sr" aria-live="assertive" id="live" style="position:absolute;left:-9999px"></div>
+      <div class="sr" aria-live="assertive" id="live"></div>
       <p class="meta" id="state" aria-live="polite">Loading the model…</p>
       <div class="controls" role="group" aria-label="Voice and feedback">
         <button class="btn" type="button" data-lang="ur" aria-pressed="true">اردو voice</button>
@@ -59,143 +74,194 @@
         <label class="btn" for="file">Upload a photo</label><input type="file" id="file" accept="image/*" hidden>
       </div>
       <p class="meta" id="fps"></p>
+    </div>
+    <div class="samples">
       <p class="meta">No camera? Tap a test photo:</p>
       <div class="gallery" id="gallery"></div>
-      <p class="meta">It speaks only when it is at least {{THRESHOLD_PCT}} sure for three frames in a row; otherwise it stays silent and you move the note. Vibration (Android): 1–4 short buzzes for Rs 10, 20, 50, 100; 1–3 long buzzes for Rs 500, 1,000, 5,000.</p>
+      <p class="meta">It speaks only when it is at least {{THRESHOLD_PCT}} sure for three frames in a row; otherwise it stays silent and you move the note.</p>
+    </div>
+  </div>
+</div></section>
+
+<section class="band" id="problem"><div class="wrap">
+  <div class="problem-grid">
+    <div class="problem-copy">
+      <h2>Every note is a question.</h2>
+      <p class="sub">Paying in cash is still how most of Pakistan buys things. For a person who cannot see, each note asks: is this five hundred or five thousand? The usual answer is to ask a stranger and trust them.</p>
+      <p class="huge"><span data-count="1.1" data-dp="1">1.1</span> million</p>
+      <p class="sub small">blind people in Pakistan (GBD 2017 estimate, Hassan et al., PLoS One 2019).</p>
+    </div>
+    <figure class="stack-fig">
+      <div class="stack"><div class="stack-in">{{NOTE_STACK}}</div></div>
+      <figcaption><span class="said-line" id="said-line" aria-live="polite">Seven notes, only 8 mm apart. Tap one to hear it.</span><span class="fine">Drawn to scale, all 65 mm tall. Widths follow the published 8 mm step; colours are approximate.</span></figcaption>
+    </figure>
+  </div>
+  <div class="mixup">
+    <figure><img src="art/note-500.jpg" width="832" height="624" loading="lazy" alt="A Rs 500 note on blue cloth"><figcaption>Rs 500</figcaption></figure>
+    <figure><img src="art/note-5000.jpg" width="832" height="624" loading="lazy" alt="A Rs 5,000 note held in a hand"><figcaption>Rs 5,000</figcaption></figure>
+    <div class="cost"><p class="huge red">Rs <span data-count="4500" data-comma="1">4,500</span></p><p class="sub">lost in one mistake between these two notes.</p></div>
+  </div>
+</div></section>
+
+<section class="dark band" id="film"><div class="wrap film-grid">
+  <div class="film-copy">
+    <h2>The whole project, in under four minutes.</h2>
+    <p class="sub">{{VIDEO_DESC}}</p>
+    <details class="transcript"><summary>Read the transcript</summary>{{TRANSCRIPT}}</details>
+  </div>
+  <div class="film-frame">
+    <video class="film" controls playsinline preload="none" width="1280" height="720" poster="video/poster.jpg">
+      {{VIDEO_SOURCES}}
+      <track kind="subtitles" src="video/pakistani-banknote-reader-film.vtt" srclang="en" label="English">
+      <a href="video/pakistani-banknote-reader-film.mp4">Download the film (MP4)</a>
+    </video>
+    <button class="play" id="play" type="button" aria-label="Play the film" hidden><i></i></button>
+  </div>
+</div></section>
+
+<section class="band cotton" id="how"><div class="wrap">
+  <h2 class="wide">Made to be used without looking.</h2>
+  <div class="features">
+    <div class="feature"><div class="inst hz" aria-hidden="true"><i></i><i></i><i></i><i></i></div><div><h3>Reads the camera four times a second</h3><p>Hold a note up and move it around. There is nothing to line up and nothing to press.</p></div></div>
+    <div class="feature"><div class="inst wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div><h3>Speaks Urdu or English</h3><p>A recorded voice, so it works even on phones that have no Urdu speech.</p></div></div>
+    <div class="feature"><div class="inst off" aria-hidden="true"><svg viewBox="0 0 56 40" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 15a31 31 0 0 1 44 0M14 23a20 20 0 0 1 28 0M22 31a9 9 0 0 1 12 0"/><path class="cut" d="M10 37 46 3"/></svg></div><div><h3>Works offline after the first visit</h3><p>The model, the runtime and the voices are saved on the phone. No app, no account, no upload.</p></div></div>
+    <div class="feature"><div class="inst buzz" aria-hidden="true"><i></i><i></i><i></i><b></b><b></b></div><div><h3>Vibrates a code on Android</h3><p>One to four short buzzes for Rs 10, 20, 50 and 100. One to three long buzzes for Rs 500, 1,000 and 5,000.</p></div></div>
+    <div class="feature"><div class="inst sr-i" aria-hidden="true"><i></i><i></i><i></i></div><div><h3>Works with screen readers</h3><p>TalkBack and VoiceOver announce each result from a live region, and every control is a large button.</p></div></div>
+    <div class="feature"><div class="inst flat" aria-hidden="true"><i></i></div><div><h3>Stays silent when unsure</h3><p>Saying a wrong amount is worse than saying nothing, so it waits until it is sure.</p></div></div>
+  </div>
+
+  <div class="speak">
+    <div class="speak-copy">
+      <h3 class="h-mid">Saying nothing beats saying the wrong amount.</h3>
+      <p>On ordinary photos the model is almost never wrong, so any threshold looks safe. So I calibrated on a stress test: every validation photo four times, with hard augmentations. That is {{N_STRESS}} photos. The threshold is the lowest that keeps wrong answers to at most 1 in 500.</p>
+    </div>
+    <div class="gauge" style="--at:{{THRESHOLD}}" data-to="{{THRESHOLD}}" role="img" aria-label="Confidence scale from 0 to 1. Below {{THRESHOLD}} the app stays silent. At {{THRESHOLD}} and above it speaks.">
+      <div class="gauge-track"><div class="gauge-quiet"><span>Stays silent</span></div><div class="gauge-speak"><span>Speaks</span></div><div class="gauge-mark"><b>{{THRESHOLD}}</b></div></div>
+      <div class="gauge-scale"><span>0</span><span>0.2</span><span>0.4</span><span>0.6</span><span>0.8</span><span>1.0</span></div>
+      <div class="frames"><p>and three frames in a row must agree:</p><span>Rs 5,000</span><span>Rs 5,000</span><span>Rs 5,000</span></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="band" id="data"><div class="wrap">
+  <div class="data-grid">
+    <div>
+      <h2>{{RF_DROPPED}} of {{RF_TOTAL}} “new” photos were not new.</h2>
+      <p class="sub">Before trusting any number, I checked whether the test photos were really new. I hashed every photo (perceptual hash, 64 bits) and joined photos within 8 bits of each other. Only {{RF_KEPT}} of the test photos in the second public dataset are genuinely new. A model tested on that set without this check would look far better than it is.</p>
+    </div>
+    <div class="data-side">
+    <figure class="pair">
+      <div class="pair-imgs"><img src="art/pair_a.jpg" width="640" height="640" loading="lazy" alt="A folded note on blue cloth, from the second public dataset"><img src="art/pair_b.jpg" width="640" height="640" loading="lazy" alt="Almost the same picture, from the training dataset"></div>
+      <figcaption>The same note in two “different” public datasets.</figcaption>
+    </figure>
+      <canvas class="dots" data-groups='[[{{RF_DROPPED}},"200,50,31","x"],[{{RF_KEPT}},"10,92,54","dot"]]' data-cols="34" role="img" aria-label="{{RF_TOTAL}} test photos: {{RF_DROPPED}} near-copies crossed out, {{RF_KEPT}} genuinely new."></canvas>
+      <p class="legend"><span class="li"><i class="k x"></i>{{RF_DROPPED}} near-copies, removed</span><span class="li"><i class="k o"></i>{{RF_KEPT}} genuinely new, kept</span></p>
     </div>
   </div>
 </div>
-
-<section id="film"><div class="wrap">
-  <h2>Watch the project in under four minutes</h2>
-  <p class="sub">{{VIDEO_DESC}}</p>
-  <video class="film" controls playsinline preload="none" width="1280" height="720" poster="video/poster.jpg">
-    <source src="video/pakistani-banknote-reader-film.mp4" type="video/mp4">
-    <track kind="subtitles" src="video/pakistani-banknote-reader-film.vtt" srclang="en" label="English">
-    <a href="video/pakistani-banknote-reader-film.mp4">Download the film (MP4)</a>
-  </video>
-  <details class="card transcript"><summary>Read the transcript</summary>{{TRANSCRIPT}}</details>
-</div></section>
-
-<section id="problem"><div class="wrap">
-  <h2>The problem</h2>
-  <p class="sub">Paying in cash is still how most of Pakistan buys things. For a person who cannot see, every note is a question: is this five hundred or five thousand? The usual answer is to ask a stranger and trust them.</p>
-  <div class="stats">
-    <div class="card stat"><div class="num">~1.1 million</div><div class="lbl">blind people in Pakistan (GBD 2017 estimate, Hassan et al., PLoS One 2019)</div></div>
-    <div class="card stat"><div class="num">7 notes</div><div class="lbl">in daily use, several close in size and colour</div></div>
-    <div class="card stat"><div class="num">Rs 4,500</div><div class="lbl">lost in one mistake between a Rs 500 and a Rs 5,000 note</div></div>
-    <div class="card stat"><div class="num">0 installs</div><div class="lbl">a web page: works on any phone with a browser, offline after the first load</div></div>
-  </div>
-  <div class="two" style="margin-top:18px">
-    <div class="card"><h3>What it does</h3><ul class="clean">
-      <li>Reads the live camera about 4 times a second.</li>
-      <li>Speaks the value in <b>Urdu</b> (recorded voice, so it works even on phones without Urdu speech) or English.</li>
-      <li>Stays silent when unsure: <b>saying a wrong amount is worse than saying nothing</b>, so it speaks only above a confidence threshold that keeps wrong answers to at most 1 in 500 on a stress test of hard, augmented photos.</li>
-      <li>Works with screen readers (TalkBack, VoiceOver): results are announced in a live region; every control is a large button.</li></ul></div>
-    <div class="card"><h3>What it does not do</h3><ul class="clean">
-      <li>It does not detect counterfeits.</li>
-      <li>It reads one note at a time.</li>
-      <li>It knows the current note series (2005–2008 designs). The State Bank's new series will need new photos: <a href="#limits">limits</a>.</li></ul></div>
-  </div>
-</div></section>
-
-<section id="data"><div class="wrap">
-  <h2>{{DATA_H2}}</h2>
-  <p class="sub">{{DATA_SUB}} Before trusting any number, we checked how much the public photos repeat each other.</p>
-  <div class="three">
-    <div class="card"><h3>1. Training: Pakistan Image Currency Dataset</h3><p class="meta">Kaggle (rafayqayyum), CC0. 3,611 phone photos of the 7 notes, front and back (14 classes), plus 280 "other" photos. Notes folded, in hands, on bedsheets.</p></div>
-    <div class="card"><h3>2. "No note" photos: Imagenette</h3><p class="meta">1,000 everyday photos (fast.ai's ImageNet subset), so the model learns to stay silent when no note is in view.</p></div>
-    <div class="card"><h3>3. External test: Roboflow currency set</h3><p class="meta">Kaggle (muhammadasjadali), CC BY 4.0. Used only for testing, never for training.</p></div>
-  </div>
-  <div class="{{DEDUPE_GRID}}" style="margin-top:18px">
-    <div class="card"><h3>What the duplicate check found</h3><ul class="clean">
-      <li>We hashed every photo (perceptual hash, 64 bits) and joined photos within 8 bits of each other.</li>
-      <li><b>{{RF_DROPPED}} of {{RF_TOTAL}}</b> test photos in the "external" Roboflow set are near-copies of photos in the training dataset. Only {{RF_KEPT}} are genuinely new. A model tested on that set without this check would look far better than it is.</li>
-      <li>Inside the training dataset, near-copies are kept on the same side of the train / validation / test split (70 / 15 / 15 per class, seed 42).</li></ul></div>
+<figure class="wall"><img src="art/wall.jpg" width="1800" height="900" loading="lazy" alt="A wall of real phone photos of Pakistani banknotes from the training dataset: folded, in hands, on bedsheets"></figure>
+<div class="wrap">
+  <div class="sources">
+    <div><h3>Pakistan Image Currency Dataset</h3><p>Training. Kaggle (rafayqayyum), CC0. 3,611 phone photos of the 7 notes, front and back (14 classes), plus 280 “other” photos. Notes folded, in hands, on bedsheets.</p></div>
+    <div><h3>Imagenette</h3><p>“No note” photos. 1,000 everyday photos (fast.ai's ImageNet subset), so the model learns to stay silent when no note is in view.</p></div>
+    <div><h3>Roboflow currency set</h3><p>External test. Kaggle (muhammadasjadali), CC BY 4.0. Used only for testing, never for training.</p></div>
     {{OWN_CARD}}
   </div>
-  <div class="card table-wrap" style="margin-top:18px"><table>
-    <tr><th scope="col">Split</th><th scope="col">Photos</th><th scope="col">Used for</th></tr>
+  <div class="table-wrap"><table>
+    <caption>Every photo has one job. Near-copies are kept on the same side of the split (70 / 15 / 15 per class, seed 42). Every file and its split: <a href="{{GITHUB}}/blob/main/data/splits.csv">data/splits.csv</a>.</caption>
+    <thead><tr><th scope="col">Split</th><th scope="col">Photos</th><th scope="col">Used for</th></tr></thead>
+    <tbody>
     <tr><td>Train</td><td>{{N_TRAIN}}</td><td>learning the weights</td></tr>
     <tr><td>Validation</td><td>{{N_VAL}}</td><td>picking the best epoch and the speaking threshold</td></tr>
     <tr><td>Test (same dataset, unseen photos)</td><td>{{N_TEST}}</td><td>headline number</td></tr>
     <tr><td>External test (other photographers)</td><td>{{RF_KEPT}}</td><td>does it generalise beyond one dataset?</td></tr>
     {{OWN_ROW}}
-  </table><p class="meta">Every file and its split: <a href="{{GITHUB}}/blob/main/data/splits.csv">data/splits.csv</a>.</p></div>
+    </tbody>
+  </table></div>
 </div></section>
 
-<section id="model"><div class="wrap">
-  <h2>Model: accurate enough, fast enough for a cheap phone</h2>
-  <p class="sub">Three models, same data and training recipe. The question is the one a real product faces: how much accuracy do you trade for speed on a Rs 20,000 phone?</p>
-  <div class="card table-wrap"><table>
-    <tr><th scope="col">Model</th><th scope="col">Start</th><th scope="col">Why it is here</th></tr>
-    <tr><td>CNN from scratch</td><td>random weights</td><td>Baseline: 5 conv blocks, 2.4M params.</td></tr>
-    <tr><td>MobileNetV3-Large (2019)</td><td>ImageNet</td><td>The standard phone network: depthwise convolutions, squeeze-excite, hard-swish.</td></tr>
-    <tr><td>MobileNetV4-Conv-Medium (2024)</td><td>ImageNet</td><td>The newest MobileNet ("universal inverted bottleneck"), tuned to be fast on all phone chips.</td></tr>
-  </table></div>
-  <div class="two" style="margin-top:18px">
-    <div class="card"><h3>Training for how blind people actually hold notes</h3><ul class="clean">
-      <li>Any rotation (upside down, sideways), zoom 0.85–1.9× (too close, half out of frame), stretch, shift.</li>
-      <li>Finger-sized patches of skin or shadow over the note.</li>
-      <li>Dim rooms, yellow bulbs, colour casts, blur, sensor noise.</li>
-      <li>No mirror flips: the camera never sees a note mirrored.</li>
-      <li>15 classes (7 notes × front/back + none); the app adds front + back.</li></ul></div>
-    <div class="card"><h3>Recipe</h3><ul class="clean">
-      <li>AdamW, cosine schedule with warm-up, label smoothing 0.1, 40 epochs (80 for the scratch CNN).</li>
-      <li>Photos cached on the GPU and augmented there; one NVIDIA L4 on Google Colab.</li>
-      <li>Best epoch and speaking threshold chosen on validation photos only.</li>
-      <li>Exported to ONNX (softmax inside) and run by ONNX Runtime Web (WebAssembly).</li></ul></div>
+<section class="band cotton" id="model"><div class="wrap">
+  <h2 class="wide">Three models, same data. One test that matters.</h2>
+  <p class="sub">On photos from the same dataset all three are almost perfect. On photos taken by other people the difference shows: transfer learning holds up far better. I deployed MobileNetV3-Large, the best on validation and also the fastest.</p>
+  <div class="models">{{MODEL_ROWS}}</div>
+  <p class="fine">Bars run from 70% to 100%. Same recipe for all three: AdamW, cosine schedule with warm-up, label smoothing 0.1, 40 epochs (80 for the scratch CNN), on one NVIDIA L4 on Google Colab. Exported to ONNX and run by ONNX Runtime Web.</p>
+  <div class="augment">
+    <figure><img src="art/augmentations.jpg" width="1320" height="946" loading="lazy" alt="Rows of real training photos as the model sees them: rotated, too close, fingers over the note, dim or yellow light, blurred"></figure>
+    <div>
+      <h3 class="h-mid">Trained for how blind people actually hold notes.</h3>
+      <ul class="plain">
+        <li>Any rotation, zoom 0.85–1.9×, stretch and shift: upside down, too close, half out of frame.</li>
+        <li>Finger-sized patches of skin or shadow over the note.</li>
+        <li>Dim rooms, yellow bulbs, colour casts, blur and sensor noise.</li>
+        <li>15 classes: 7 notes, front and back, plus “no note”. The app adds front and back.</li>
+        <li class="no">No mirror flips: a camera never sees a mirrored note.</li>
+      </ul>
+    </div>
   </div>
 </div></section>
 
-<section id="results"><div class="wrap">
-  <h2>Results</h2>
+<section class="dark band" id="results"><div class="wrap">
+  <h2>The honest numbers.</h2>
+  <div class="scores">
+    <div class="score"><p class="num"><span data-count="{{TEST_ACC_N}}" data-dp="1">{{TEST_ACC_N}}</span>%</p><p class="what">right value on {{N_TEST}} unseen photos from the same dataset.</p><canvas class="dots" data-groups='[[{{N_TEST}},"125,224,160","dot"]]' data-cols="34" role="img" aria-label="{{N_TEST}} test photos, all named correctly."></canvas></div>
+    <div class="score"><p class="num"><span data-count="{{EXT_ACC_N}}" data-dp="1">{{EXT_ACC_N}}</span>%</p><p class="what">right value on {{RF_KEPT}} photos taken by other people.</p><canvas class="dots" data-groups='[[{{EXT_RIGHT}},"125,224,160","dot"],[{{EXT_MISS}},"255,120,90","ring"]]' data-cols="16" role="img" aria-label="{{RF_KEPT}} photos: {{EXT_RIGHT}} named correctly, {{EXT_MISS}} not."></canvas></div>
+    <div class="score top"><p class="num"><span data-count="{{EXT_WRONG}}">{{EXT_WRONG}}</span> wrong</p><p class="what">amounts spoken on those {{RF_KEPT}} photos. It stayed silent on {{EXT_SILENT}}.</p><canvas class="dots" data-groups='[[{{EXT_SPOKE}},"255,212,0","dot"],[{{EXT_SILENT}},"185,199,186","ring"]]' data-cols="16" role="img" aria-label="{{RF_KEPT}} photos: spoke correctly on {{EXT_SPOKE}}, silent on {{EXT_SILENT}}, wrong on {{EXT_WRONG}}."></canvas></div>
+  </div>
+  <p class="sub verdict">The first number mostly shows how alike the dataset's photos are. The others are what a real user would get.</p>
+</div></section>
+
+<section class="band" id="details"><div class="wrap">
   <p class="sub">{{RESULTS_SENTENCE}}</p>
-  <div class="stats">
-    <div class="card stat"><div class="num">{{TEST_ACC}}</div><div class="lbl">test accuracy, note value ({{N_TEST}} unseen photos)</div></div>
-    <div class="card stat"><div class="num">{{WRONG}}</div><div class="lbl">of test photos where it would say a wrong value</div></div>
-    <div class="card stat"><div class="num">{{EXT_ACC}}</div><div class="lbl">external test accuracy ({{RF_KEPT}} photos by other people)</div></div>
-    {{FOURTH_STAT}}
-  </div>
-  <div class="card table-wrap" style="margin-top:18px"><table>
-    <tr><th scope="col">Model</th><th scope="col">Params</th><th scope="col">Test accuracy</th><th scope="col">Wrong value said</th><th scope="col">Speaks on note photos</th><th scope="col">External test</th><th scope="col">CPU ms</th></tr>
+  <div class="table-wrap"><table>
+    <caption>Every model, every test.</caption>
+    <thead><tr><th scope="col">Model</th><th scope="col">Params</th><th scope="col">Test accuracy</th><th scope="col">Wrong value said</th><th scope="col">Speaks on note photos</th><th scope="col">External test</th><th scope="col">CPU ms</th></tr></thead>
+    <tbody>
     {{RESULTS_ROWS}}
+    </tbody>
   </table></div>
-  <div class="figs" style="margin-top:18px">
+  <div class="figs">
     <figure><img src="figures/accuracy_vs_speed.png" alt="Accuracy against milliseconds per photo for the three models" loading="lazy"><figcaption>Accuracy vs speed (ONNX Runtime, CPU).</figcaption></figure>
     <figure><img src="figures/speak_threshold.png" alt="Coverage and wrong-value rate as the speaking threshold changes" loading="lazy"><figcaption>Speak or stay silent: raising the threshold trades speaking less often for fewer wrong values.</figcaption></figure>
     <figure><img src="figures/confusion_matrix.png" alt="Confusion matrix of the deployed model on test photos" loading="lazy"><figcaption>Which notes get confused, deployed model, test photos.</figcaption></figure>
     <figure><img src="figures/training_curves.png" alt="Training loss and validation accuracy by epoch" loading="lazy"><figcaption>Training loss and validation accuracy per epoch.</figcaption></figure>
     {{OWN_FIGURE}}
   </div>
-  <div class="two" style="margin-top:18px" id="limits">
-    <div class="card"><h3>Honest limits</h3><ul class="clean">{{LIMITS}}</ul></div>
-    <div class="card"><h3>Test it yourself (3 commands)</h3>
+  <div class="limits-grid" id="limits">
+    <div>
+      <h2>What it can't do yet.</h2>
+      <ul class="plain">{{LIMITS}}</ul>
+    </div>
+    <div class="test-it">
+      <h3 class="h-mid">Test it yourself</h3>
 <pre>git clone {{GITHUB}}
 cd boltanote &amp;&amp; pip install -r requirements.txt
-python evaluate.py                 # 16 bundled photos
+python evaluate.py    # 16 bundled photos
 python predict.py samples/500_front_1.jpg</pre>
-      <p class="meta">{{OWN_CMD}}Weights: <code>weights/boltanote.onnx</code> (ONNX), <code>weights/boltanote_torchscript.pt</code> (TorchScript), <code>weights/&lt;model&gt;.pt</code> (PyTorch).</p></div>
+      <p class="fine">{{OWN_CMD}}Weights: <code>weights/boltanote.onnx</code> (ONNX), <code>weights/boltanote_torchscript.pt</code> (TorchScript), <code>weights/&lt;model&gt;.pt</code> (PyTorch).</p>
+    </div>
   </div>
 </div></section>
 
-<section id="faq"><div class="wrap">
-  <h2>Frequently asked questions</h2>
+<section class="band cotton" id="faq"><div class="wrap faq-grid">
+  <h2>Questions, answered.</h2>
   <div class="faq">{{FAQ}}</div>
 </div></section>
 
-<section id="links"><div class="wrap">
-  <h2>Everything, linked</h2>
-  <p class="sub">Every part of the project, each with two working copies on separate hosts, so one outage never breaks a link. Machine-readable list: <a href="project.json">/project.json</a> · guide for AI crawlers: <a href="llms.txt">/llms.txt</a> · full text: <a href="llms-full.txt">/llms-full.txt</a>.</p>
-  <div class="links">{{LINK_CARDS}}</div>
+<section class="dark band" id="links"><div class="wrap">
+  <h2>Everything, with an alternate link.</h2>
+  <p class="sub">Every part of the project lives on two separate hosts, so one outage never breaks a link. Machine-readable list: <a href="project.json">/project.json</a> · guide for AI crawlers: <a href="llms.txt">/llms.txt</a> · full text: <a href="llms-full.txt">/llms-full.txt</a>.</p>
+  {{LINK_CARDS}}
 </div></section>
 </main>
 
-<footer><div class="wrap">
-  Pakistani Banknote Reader by {{AUTHOR}}, Deep Learning (BSCS-7A), Superior University, Lahore · instructor Dr. Munir Ahmad · {{MONTH}} · last updated <time datetime="{{TODAY}}">{{TODAY}}</time>.<br>
-  Data: Pakistan Image Currency Dataset (CC0), Imagenette (fast.ai), Pakistani Currency Notes Dataset (Roboflow, CC BY 4.0){{OWN_CREDIT}}. Voice: Microsoft neural voices (Uzma, Urdu).
+<footer class="dark"><canvas class="rosette" data-color="255,212,0" data-alpha=".2"></canvas><div class="wrap foot">
+  <p class="foot-title">Pakistani Banknote Reader</p>
+  <p class="foot-by">{{AUTHOR}} · BSCS-7A · Superior University, Lahore</p>
+  <p class="foot-site"><a href="{{SITE}}">{{SITE_SHORT}}</a> · alternate <a href="{{PAGES}}/">{{PAGES_SHORT}}</a></p>
+  <p class="fine">Deep Learning, instructor Dr. Munir Ahmad · {{MONTH}} · last updated <time datetime="{{TODAY}}">{{TODAY}}</time>. Data: Pakistan Image Currency Dataset (CC0), Imagenette (fast.ai), Pakistani Currency Notes Dataset (Roboflow, CC BY 4.0){{OWN_CREDIT}}. Voice: Microsoft neural voices (Uzma, Urdu). A student project, not a certified aid; always confirm large amounts.</p>
 </div></footer>
-<script src="vendor/ort/ort.min.js"></script>
-<script src="app.js"></script>
+<script src="vendor/ort/ort.min.js" defer></script>
+<script src="app.js" defer></script>
+<script src="page.js" defer></script>
 </body>
 </html>

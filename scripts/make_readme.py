@@ -134,11 +134,11 @@ site/  scripts/build_site.py     the website (deployed on Vercel from web/); sit
 notebooks/                       executed Colab training notebook
 ```
 
-## Every link, with a second copy
+## Every link, with an alternate
 
 Every part of the project is on two separate hosts, so one outage never breaks a link.
 
-| What | Copy 1 | Copy 2 |
+| What | Main link | Alternate link |
 |---|---|---|
 {copies_table}
 

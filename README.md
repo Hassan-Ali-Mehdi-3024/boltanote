@@ -116,11 +116,11 @@ site/  scripts/build_site.py     the website (deployed on Vercel from web/); sit
 notebooks/                       executed Colab training notebook
 ```
 
-## Every link, with a second copy
+## Every link, with an alternate
 
 Every part of the project is on two separate hosts, so one outage never breaks a link.
 
-| What | Copy 1 | Copy 2 |
+| What | Main link | Alternate link |
 |---|---|---|
 | This website | [boltanote.vercel.app](https://boltanote.vercel.app) | [hassan-ali-mehdi-3024.github.io/boltanote/](https://hassan-ali-mehdi-3024.github.io/boltanote/) |
 | GitHub repository | [github.com/Hassan-Ali-Mehdi-3024/boltanote](https://github.com/Hassan-Ali-Mehdi-3024/boltanote) | [boltanote.vercel.app/downloads/boltanote-source.zip](https://boltanote.vercel.app/downloads/boltanote-source.zip) |

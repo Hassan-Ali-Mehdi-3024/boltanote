@@ -19,19 +19,29 @@ function localSet(k, v) { try { localStorage.setItem("boltanote." + k, v); } cat
 
 async function init() {
   ort.env.wasm.wasmPaths = new URL("vendor/ort/", document.baseURI).href;
-  setLang(lang);
-  setVibrate(vibrate);
+  ort.env.wasm.proxy = true;  // the model runs in a worker, so the page never freezes while it loads or reads
   try {
     [card, samples] = await Promise.all([fetch("model_card.json").then((r) => r.json()), fetch("samples/samples.json").then((r) => r.json())]);
     values = card.values; classes = card.classes; threshold = card.speaking.threshold;
     buildGallery();
-    session = await ort.InferenceSession.create("model/boltanote.onnx", { executionProviders: ["wasm"], graphOptimizationLevel: "all" });
+    session = await loadModel();
     state("Ready. Tap “Start camera”, or try a sample photo below.");
     if (pendingStill) still(...pendingStill);  // a sample tapped while the model was loading
+    if (startWhenReady) start();
   } catch (e) {
     console.error(e);
     state("Could not load the model in this browser: " + e.message);
   }
+}
+
+// The site's own copy first, then the alternates on the other hosts.
+async function loadModel() {
+  const sources = ["model/boltanote.onnx", "https://hassan-ali-mehdi-3024.github.io/boltanote/model/boltanote.onnx", "https://boltanote.vercel.app/model/boltanote.onnx"];
+  let failure;
+  for (const src of sources) {
+    try { return await ort.InferenceSession.create(src, { executionProviders: ["wasm"], graphOptimizationLevel: "all" }); } catch (e) { failure = e; }
+  }
+  throw failure;
 }
 
 function state(t) { $("#state").textContent = t; }
@@ -141,7 +151,8 @@ function stop() {
   state("Camera off.");
 }
 
-let pendingStill = null;
+let pendingStill = null, startWhenReady = false;
+window.readerStart = () => { if (running) return; if (session) start(); else { startWhenReady = true; state("The model is still loading… the camera will start as soon as it is ready."); } };
 async function still(url, label) {
   if (!session) { pendingStill = [url, label]; return state("The model is still loading… this photo will be read as soon as it is ready."); }
   if (running) stop();
@@ -186,7 +197,9 @@ document.querySelectorAll("[data-lang]").forEach((b) => b.addEventListener("clic
 $("#vib").addEventListener("click", () => setVibrate(!vibrate));
 $("#again").addEventListener("click", () => { if (lastSaid) say(lastSaid); });
 $("#file").addEventListener("change", (e) => { const f = e.target.files[0]; if (f) still(URL.createObjectURL(f), null); });
-init();
+setLang(lang); setVibrate(vibrate);
+// The page paints first; the model follows straight after.
+addEventListener("load", () => setTimeout(init, 60));
 
 // Saves the reader on the phone so it also opens with no internet.
 if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));

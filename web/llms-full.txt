@@ -4,23 +4,23 @@
 
 Full text for AI engines: https://boltanote.vercel.app/llms-full.txt
 
-## Links (each with a second copy)
-- [This website](https://boltanote.vercel.app): the live reader and this page (Vercel, GitHub Pages). Second copy: https://hassan-ali-mehdi-3024.github.io/boltanote/
-- [GitHub repository](https://github.com/Hassan-Ali-Mehdi-3024/boltanote): code, weights, splits, notebook; second copy is the source code as a zip. Second copy: https://boltanote.vercel.app/downloads/boltanote-source.zip
-- [Video presentation (YouTube)](https://youtu.be/P0O-qhMldGI): under four minutes, in my own voice; also on this site, and as a 4K download. Second copy: https://boltanote.vercel.app/video/pakistani-banknote-reader-film.mp4 Third copy: https://github.com/Hassan-Ali-Mehdi-3024/boltanote/releases/download/v1.0/Pakistani_Banknote_Reader_film_4K60.mp4
-- [Report (PDF)](https://boltanote.vercel.app/report.pdf): full write-up. Second copy: https://github.com/Hassan-Ali-Mehdi-3024/boltanote/raw/main/docs/BoltaNote_report.pdf
-- [Report (web page)](https://boltanote.vercel.app/report/): the same report, as a page. Second copy: https://hassan-ali-mehdi-3024.github.io/boltanote/report/
-- [Presentation slides (PDF)](https://boltanote.vercel.app/slides.pdf): the deck. Second copy: https://github.com/Hassan-Ali-Mehdi-3024/boltanote/raw/main/docs/slides/BoltaNote_slides.pdf
-- [Model weights (ONNX)](https://github.com/Hassan-Ali-Mehdi-3024/boltanote/raw/main/weights/boltanote.onnx): the deployed model, weights/boltanote.onnx. Second copy: https://boltanote.vercel.app/model/boltanote.onnx
-- [Model weights (TorchScript)](https://github.com/Hassan-Ali-Mehdi-3024/boltanote/raw/main/weights/boltanote_torchscript.pt): weights/boltanote_torchscript.pt. Second copy: https://github.com/Hassan-Ali-Mehdi-3024/boltanote/releases/download/v1.0/boltanote_torchscript.pt
-- [PyTorch checkpoints](https://github.com/Hassan-Ali-Mehdi-3024/boltanote/tree/main/weights): weights/*.pt, all three models. Second copy: https://github.com/Hassan-Ali-Mehdi-3024/boltanote/releases/tag/v1.0
-- [Training notebook](https://github.com/Hassan-Ali-Mehdi-3024/boltanote/blob/main/notebooks/BoltaNote_train.ipynb): Colab, all outputs. Second copy: https://boltanote.vercel.app/notebooks/BoltaNote_train.ipynb
-- [Data splits (CSV)](https://github.com/Hassan-Ali-Mehdi-3024/boltanote/blob/main/data/splits.csv): every file and its split. Second copy: https://boltanote.vercel.app/data/splits.csv
-- [Main dataset](https://www.kaggle.com/datasets/rafayqayyum/pakistan-image-currency-dataset): Pakistan Image Currency Dataset, CC0; Kaggle and an unchanged mirror. Second copy: https://github.com/Hassan-Ali-Mehdi-3024/boltanote/releases/download/v1.0/pakistan-image-currency-dataset.zip
-- [External test set](https://www.kaggle.com/datasets/muhammadasjadali/pakistani-currency-notes): Roboflow currency notes, CC BY 4.0; Kaggle and an unchanged mirror. Second copy: https://github.com/Hassan-Ali-Mehdi-3024/boltanote/releases/download/v1.0/pakistani-currency-notes-roboflow.zip
-- ["No note" photos (Imagenette)](https://github.com/fastai/imagenette): fast.ai's ImageNet subset; project page and download. Second copy: https://s3.amazonaws.com/fast-ai-imageclas/imagenette2-160.tgz
-- [Model card (JSON)](https://boltanote.vercel.app/model_card.json): inputs, outputs, threshold, metrics. Second copy: https://github.com/Hassan-Ali-Mehdi-3024/boltanote/raw/main/model_card.json
-- [Project summary (JSON)](https://boltanote.vercel.app/project.json): every result and link, for machines. Second copy: https://hassan-ali-mehdi-3024.github.io/boltanote/project.json
+## Links (each with an alternate)
+- [This website](https://boltanote.vercel.app): the live reader and this page (Vercel, GitHub Pages). Alternate: https://hassan-ali-mehdi-3024.github.io/boltanote/
+- [GitHub repository](https://github.com/Hassan-Ali-Mehdi-3024/boltanote): code, weights, splits, notebook; the alternate is the source code as a zip. Alternate: https://boltanote.vercel.app/downloads/boltanote-source.zip
+- [Video presentation (YouTube)](https://youtu.be/P0O-qhMldGI): under four minutes, in my own voice; alternates: on this site, and a 4K download. Alternate: https://boltanote.vercel.app/video/pakistani-banknote-reader-film.mp4 Alternate 2: https://github.com/Hassan-Ali-Mehdi-3024/boltanote/releases/download/v1.0/Pakistani_Banknote_Reader_film_4K60.mp4
+- [Report (PDF)](https://boltanote.vercel.app/report.pdf): full write-up. Alternate: https://github.com/Hassan-Ali-Mehdi-3024/boltanote/raw/main/docs/BoltaNote_report.pdf
+- [Report (web page)](https://boltanote.vercel.app/report/): the same report, as a page. Alternate: https://hassan-ali-mehdi-3024.github.io/boltanote/report/
+- [Presentation slides (PDF)](https://boltanote.vercel.app/slides.pdf): the deck. Alternate: https://github.com/Hassan-Ali-Mehdi-3024/boltanote/raw/main/docs/slides/BoltaNote_slides.pdf
+- [Model weights (ONNX)](https://github.com/Hassan-Ali-Mehdi-3024/boltanote/raw/main/weights/boltanote.onnx): the deployed model, weights/boltanote.onnx. Alternate: https://boltanote.vercel.app/model/boltanote.onnx
+- [Model weights (TorchScript)](https://github.com/Hassan-Ali-Mehdi-3024/boltanote/raw/main/weights/boltanote_torchscript.pt): weights/boltanote_torchscript.pt. Alternate: https://github.com/Hassan-Ali-Mehdi-3024/boltanote/releases/download/v1.0/boltanote_torchscript.pt
+- [PyTorch checkpoints](https://github.com/Hassan-Ali-Mehdi-3024/boltanote/tree/main/weights): weights/*.pt, all three models. Alternate: https://github.com/Hassan-Ali-Mehdi-3024/boltanote/releases/tag/v1.0
+- [Training notebook](https://github.com/Hassan-Ali-Mehdi-3024/boltanote/blob/main/notebooks/BoltaNote_train.ipynb): Colab, all outputs. Alternate: https://boltanote.vercel.app/notebooks/BoltaNote_train.ipynb
+- [Data splits (CSV)](https://github.com/Hassan-Ali-Mehdi-3024/boltanote/blob/main/data/splits.csv): every file and its split. Alternate: https://boltanote.vercel.app/data/splits.csv
+- [Main dataset](https://www.kaggle.com/datasets/rafayqayyum/pakistan-image-currency-dataset): Pakistan Image Currency Dataset, CC0; Kaggle and an unchanged mirror. Alternate: https://github.com/Hassan-Ali-Mehdi-3024/boltanote/releases/download/v1.0/pakistan-image-currency-dataset.zip
+- [External test set](https://www.kaggle.com/datasets/muhammadasjadali/pakistani-currency-notes): Roboflow currency notes, CC BY 4.0; Kaggle and an unchanged mirror. Alternate: https://github.com/Hassan-Ali-Mehdi-3024/boltanote/releases/download/v1.0/pakistani-currency-notes-roboflow.zip
+- ["No note" photos (Imagenette)](https://github.com/fastai/imagenette): fast.ai's ImageNet subset; project page and download. Alternate: https://s3.amazonaws.com/fast-ai-imageclas/imagenette2-160.tgz
+- [Model card (JSON)](https://boltanote.vercel.app/model_card.json): inputs, outputs, threshold, metrics. Alternate: https://github.com/Hassan-Ali-Mehdi-3024/boltanote/raw/main/model_card.json
+- [Project summary (JSON)](https://boltanote.vercel.app/project.json): every result and link, for machines. Alternate: https://hassan-ali-mehdi-3024.github.io/boltanote/project.json
 - LinkedIn post: none. Due to legal commitments with the company where I work, I can't use my LinkedIn for personal use while I'm employed there.
 
 ## Model
@@ -79,7 +79,7 @@ The Pakistan Image Currency Dataset (CC0) of 3,611 phone photos, plus 1,000 Imag
 Hassan Ali Mehdi, as a Deep Learning semester project at Superior University, Lahore (BSCS-7A), under Dr. Munir Ahmad, November 2026.
 
 ### Where are the code, weights and report?
-The code, weights and data splits are at https://github.com/Hassan-Ali-Mehdi-3024/boltanote, and the report is at https://boltanote.vercel.app/report.pdf. Every link, with a second copy, is in the Everything, linked section of this page.
+The code, weights and data splits are at https://github.com/Hassan-Ali-Mehdi-3024/boltanote, and the report is at https://boltanote.vercel.app/report.pdf. Every link, with its alternate, is in the links section of this page.
 
 ### Is there a LinkedIn post?
 No. Due to legal commitments with the company where I work, I can't use my LinkedIn for personal use while I'm employed there.
@@ -112,6 +112,7 @@ Everything is open. The website, the code, the weights, the data splits are all 
 
 ## Full report
 
+← Pakistani Banknote Reader
 A talking Pakistani banknote reader for blind people, tested beyond its own dataset
 Hassan Ali Mehdi · BS Computer Science (7A), Superior University, Lahore · Deep Learning, instructor Dr. Munir Ahmad · November 2026
 Live demo: https://boltanote.vercel.app · Code, weights & data splits: https://github.com/Hassan-Ali-Mehdi-3024/boltanote · Video: https://youtu.be/P0O-qhMldGI
