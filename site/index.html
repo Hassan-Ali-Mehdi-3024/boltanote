@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Pakistani Banknote Reader for blind people</title>
-<meta name="description" content="This web app reads Pakistani banknotes through the phone camera and says the value aloud in Urdu or English. Runs offline in the browser. Deep learning semester project.">
-<meta property="og:title" content="Pakistani Banknote Reader">
-<meta property="og:description" content="Point your phone at a Pakistani banknote and it says the value out loud, in Urdu.">
-<meta property="og:image" content="figures/accuracy_vs_speed.png">
+{{HEAD}}
 <meta name="theme-color" content="#ffd400">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="icons/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
 <link rel="alternate" type="application/json" href="project.json" title="Machine-readable project summary">
+<link rel="alternate" type="text/plain" href="llms.txt" title="Guide for AI crawlers">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
@@ -20,14 +20,15 @@
 <a class="skip" href="#reader">Skip to the note reader</a>
 <header class="top"><div class="wrap">
   <a class="brand" href="#">Pakistani Banknote Reader</a>
-  <nav><a href="#reader">Reader</a><a href="#problem">Problem</a><a href="#data">Data</a><a href="#model">Model</a><a href="#results">Results</a><a href="#links">Links</a></nav>
+  <nav><a href="#reader">Reader</a><a href="#film">Video</a><a href="#problem">Problem</a><a href="#data">Data</a><a href="#model">Model</a><a href="#results">Results</a><a href="#faq">FAQ</a><a href="#links">Links</a></nav>
 </div></header>
 
 <main>
 <div class="wrap hero">
-  <h1>Point your phone at a note. It says the value out loud.</h1>
+  <h1>Pakistani Banknote Reader for blind people</h1>
+  <p class="tagline">Point your phone at a note. It says the value out loud.</p>
   <p class="ur" lang="ur">نوٹ کیمرے کے سامنے رکھیں، یہ بول کر بتائے گا کہ کتنے روپے کا ہے</p>
-  <p class="lead">A banknote reader for blind and low-vision people in Pakistan. It recognises all seven notes in circulation (Rs 10 to Rs 5,000), front or back, folded or upside down, and speaks in Urdu or English. It runs inside the browser, offline once loaded, with no app to install.</p>
+  <p class="lead" id="summary">A free web app that reads Pakistani banknotes out loud for blind and low-vision people. It recognises all seven notes in circulation (Rs 10 to Rs 5,000), front or back, folded or upside down, and speaks in Urdu or English. It runs inside the browser, works offline after the first visit, and needs no app, no account and no upload.</p>
 </div>
 
 <div class="wrap" id="reader">
@@ -65,6 +66,17 @@
   </div>
 </div>
 
+<section id="film"><div class="wrap">
+  <h2>Watch the project in under four minutes</h2>
+  <p class="sub">{{VIDEO_DESC}}</p>
+  <video class="film" controls playsinline preload="none" width="1280" height="720" poster="video/poster.jpg">
+    <source src="video/pakistani-banknote-reader-film.mp4" type="video/mp4">
+    <track kind="subtitles" src="video/pakistani-banknote-reader-film.vtt" srclang="en" label="English">
+    <a href="video/pakistani-banknote-reader-film.mp4">Download the film (MP4)</a>
+  </video>
+  <details class="card transcript"><summary>Read the transcript</summary>{{TRANSCRIPT}}</details>
+</div></section>
+
 <section id="problem"><div class="wrap">
   <h2>The problem</h2>
   <p class="sub">Paying in cash is still how most of Pakistan buys things. For a person who cannot see, every note is a question: is this five hundred or five thousand? The usual answer is to ask a stranger and trust them.</p>
@@ -75,12 +87,12 @@
     <div class="card stat"><div class="num">0 installs</div><div class="lbl">a web page: works on any phone with a browser, offline after the first load</div></div>
   </div>
   <div class="two" style="margin-top:18px">
-    <div class="card"><b>What it does</b><ul class="clean">
+    <div class="card"><h3>What it does</h3><ul class="clean">
       <li>Reads the live camera about 4 times a second.</li>
       <li>Speaks the value in <b>Urdu</b> (recorded voice, so it works even on phones without Urdu speech) or English.</li>
       <li>Stays silent when unsure: <b>saying a wrong amount is worse than saying nothing</b>, so it speaks only above a confidence threshold that keeps wrong answers to at most 1 in 500 on a stress test of hard, augmented photos.</li>
       <li>Works with screen readers (TalkBack, VoiceOver): results are announced in a live region; every control is a large button.</li></ul></div>
-    <div class="card"><b>What it does not do</b><ul class="clean">
+    <div class="card"><h3>What it does not do</h3><ul class="clean">
       <li>It does not detect counterfeits.</li>
       <li>It reads one note at a time.</li>
       <li>It knows the current note series (2005–2008 designs). The State Bank's new series will need new photos: <a href="#limits">limits</a>.</li></ul></div>
@@ -88,28 +100,27 @@
 </div></section>
 
 <section id="data"><div class="wrap">
-  <h2>Data: public photos, checked for copies, plus our own</h2>
-  <p class="sub">Three public datasets and one we collected ourselves. Before trusting any number, we checked how much the public photos repeat each other.</p>
+  <h2>{{DATA_H2}}</h2>
+  <p class="sub">{{DATA_SUB}} Before trusting any number, we checked how much the public photos repeat each other.</p>
   <div class="three">
-    <div class="card"><b>1. Training: Pakistan Image Currency Dataset</b><p class="meta">Kaggle (rafayqayyum), CC0. 3,611 phone photos of the 7 notes, front and back (14 classes), plus 280 "other" photos. Notes folded, in hands, on bedsheets.</p></div>
-    <div class="card"><b>2. "No note" photos: Imagenette</b><p class="meta">1,000 everyday photos (fast.ai's ImageNet subset), so the model learns to stay silent when no note is in view.</p></div>
-    <div class="card"><b>3. External test: Roboflow currency set</b><p class="meta">Kaggle (muhammadasjadali), CC BY 4.0. Used only for testing, never for training.</p></div>
+    <div class="card"><h3>1. Training: Pakistan Image Currency Dataset</h3><p class="meta">Kaggle (rafayqayyum), CC0. 3,611 phone photos of the 7 notes, front and back (14 classes), plus 280 "other" photos. Notes folded, in hands, on bedsheets.</p></div>
+    <div class="card"><h3>2. "No note" photos: Imagenette</h3><p class="meta">1,000 everyday photos (fast.ai's ImageNet subset), so the model learns to stay silent when no note is in view.</p></div>
+    <div class="card"><h3>3. External test: Roboflow currency set</h3><p class="meta">Kaggle (muhammadasjadali), CC BY 4.0. Used only for testing, never for training.</p></div>
   </div>
-  <div class="two" style="margin-top:18px">
-    <div class="card"><b>What the duplicate check found</b><ul class="clean">
+  <div class="{{DEDUPE_GRID}}" style="margin-top:18px">
+    <div class="card"><h3>What the duplicate check found</h3><ul class="clean">
       <li>We hashed every photo (perceptual hash, 64 bits) and joined photos within 8 bits of each other.</li>
       <li><b>{{RF_DROPPED}} of {{RF_TOTAL}}</b> test photos in the "external" Roboflow set are near-copies of photos in the training dataset. Only {{RF_KEPT}} are genuinely new. A model tested on that set without this check would look far better than it is.</li>
       <li>Inside the training dataset, near-copies are kept on the same side of the train / validation / test split (70 / 15 / 15 per class, seed 42).</li></ul></div>
-    <div class="card"><b>4. Our own photos: the real test</b>
-      <p class="meta">{{OWN_DATA_TEXT}}</p></div>
+    {{OWN_CARD}}
   </div>
   <div class="card table-wrap" style="margin-top:18px"><table>
-    <tr><th>Split</th><th>Photos</th><th>Used for</th></tr>
+    <tr><th scope="col">Split</th><th scope="col">Photos</th><th scope="col">Used for</th></tr>
     <tr><td>Train</td><td>{{N_TRAIN}}</td><td>learning the weights</td></tr>
     <tr><td>Validation</td><td>{{N_VAL}}</td><td>picking the best epoch and the speaking threshold</td></tr>
     <tr><td>Test (same dataset, unseen photos)</td><td>{{N_TEST}}</td><td>headline number</td></tr>
     <tr><td>External test (other photographers)</td><td>{{RF_KEPT}}</td><td>does it generalise beyond one dataset?</td></tr>
-    <tr><td>Our own photos</td><td>{{N_OWN}}</td><td>does it work on real notes, in real rooms?</td></tr>
+    {{OWN_ROW}}
   </table><p class="meta">Every file and its split: <a href="{{GITHUB}}/blob/main/data/splits.csv">data/splits.csv</a>.</p></div>
 </div></section>
 
@@ -117,19 +128,19 @@
   <h2>Model: accurate enough, fast enough for a cheap phone</h2>
   <p class="sub">Three models, same data and training recipe. The question is the one a real product faces: how much accuracy do you trade for speed on a Rs 20,000 phone?</p>
   <div class="card table-wrap"><table>
-    <tr><th>Model</th><th>Start</th><th>Why it is here</th></tr>
+    <tr><th scope="col">Model</th><th scope="col">Start</th><th scope="col">Why it is here</th></tr>
     <tr><td>CNN from scratch</td><td>random weights</td><td>Baseline: 5 conv blocks, 2.4M params.</td></tr>
     <tr><td>MobileNetV3-Large (2019)</td><td>ImageNet</td><td>The standard phone network: depthwise convolutions, squeeze-excite, hard-swish.</td></tr>
     <tr><td>MobileNetV4-Conv-Medium (2024)</td><td>ImageNet</td><td>The newest MobileNet ("universal inverted bottleneck"), tuned to be fast on all phone chips.</td></tr>
   </table></div>
   <div class="two" style="margin-top:18px">
-    <div class="card"><b>Training for how blind people actually hold notes</b><ul class="clean">
+    <div class="card"><h3>Training for how blind people actually hold notes</h3><ul class="clean">
       <li>Any rotation (upside down, sideways), zoom 0.85–1.9× (too close, half out of frame), stretch, shift.</li>
       <li>Finger-sized patches of skin or shadow over the note.</li>
       <li>Dim rooms, yellow bulbs, colour casts, blur, sensor noise.</li>
       <li>No mirror flips: the camera never sees a note mirrored.</li>
       <li>15 classes (7 notes × front/back + none); the app adds front + back.</li></ul></div>
-    <div class="card"><b>Recipe</b><ul class="clean">
+    <div class="card"><h3>Recipe</h3><ul class="clean">
       <li>AdamW, cosine schedule with warm-up, label smoothing 0.1, 40 epochs (80 for the scratch CNN).</li>
       <li>Photos cached on the GPU and augmented there; one NVIDIA L4 on Google Colab.</li>
       <li>Best epoch and speaking threshold chosen on validation photos only.</li>
@@ -144,10 +155,10 @@
     <div class="card stat"><div class="num">{{TEST_ACC}}</div><div class="lbl">test accuracy, note value ({{N_TEST}} unseen photos)</div></div>
     <div class="card stat"><div class="num">{{WRONG}}</div><div class="lbl">of test photos where it would say a wrong value</div></div>
     <div class="card stat"><div class="num">{{EXT_ACC}}</div><div class="lbl">external test accuracy ({{RF_KEPT}} photos by other people)</div></div>
-    <div class="card stat"><div class="num">{{OWN_ACC}}</div><div class="lbl">on our own photos ({{N_OWN}} photos)</div></div>
+    {{FOURTH_STAT}}
   </div>
   <div class="card table-wrap" style="margin-top:18px"><table>
-    <tr><th>Model</th><th>Params</th><th>Test accuracy</th><th>Wrong value said</th><th>Speaks on note photos</th><th>External test</th><th>CPU ms</th></tr>
+    <tr><th scope="col">Model</th><th scope="col">Params</th><th scope="col">Test accuracy</th><th scope="col">Wrong value said</th><th scope="col">Speaks on note photos</th><th scope="col">External test</th><th scope="col">CPU ms</th></tr>
     {{RESULTS_ROWS}}
   </table></div>
   <div class="figs" style="margin-top:18px">
@@ -158,8 +169,8 @@
     {{OWN_FIGURE}}
   </div>
   <div class="two" style="margin-top:18px" id="limits">
-    <div class="card"><b>Honest limits</b><ul class="clean">{{LIMITS}}</ul></div>
-    <div class="card"><b>Test it yourself (3 commands)</b>
+    <div class="card"><h3>Honest limits</h3><ul class="clean">{{LIMITS}}</ul></div>
+    <div class="card"><h3>Test it yourself (3 commands)</h3>
 <pre>git clone {{GITHUB}}
 cd boltanote &amp;&amp; pip install -r requirements.txt
 python evaluate.py                 # 16 bundled photos
@@ -168,18 +179,23 @@ python predict.py samples/500_front_1.jpg</pre>
   </div>
 </div></section>
 
+<section id="faq"><div class="wrap">
+  <h2>Frequently asked questions</h2>
+  <div class="faq">{{FAQ}}</div>
+</div></section>
+
 <section id="links"><div class="wrap">
   <h2>Everything, linked</h2>
-  <p class="sub">Every artefact of the project. Machine-readable copy: <a href="project.json">/project.json</a> · guide for AI crawlers: <a href="llms.txt">/llms.txt</a>.</p>
+  <p class="sub">Every part of the project, each with two working copies on separate hosts, so one outage never breaks a link. Machine-readable list: <a href="project.json">/project.json</a> · guide for AI crawlers: <a href="llms.txt">/llms.txt</a> · full text: <a href="llms-full.txt">/llms-full.txt</a>.</p>
   <div class="links">{{LINK_CARDS}}</div>
 </div></section>
 </main>
 
 <footer><div class="wrap">
-  Pakistani Banknote Reader by {{AUTHOR}}, Deep Learning (BSCS-7A), Superior University, Lahore · instructor Dr. Munir Ahmad · {{MONTH}}.<br>
-  Data: Pakistan Image Currency Dataset (CC0), Imagenette (fast.ai), Pakistani Currency Notes Dataset (Roboflow, CC BY 4.0), and our own photos. Voice: Microsoft neural voices (Uzma, Urdu).
+  Pakistani Banknote Reader by {{AUTHOR}}, Deep Learning (BSCS-7A), Superior University, Lahore · instructor Dr. Munir Ahmad · {{MONTH}} · last updated <time datetime="{{TODAY}}">{{TODAY}}</time>.<br>
+  Data: Pakistan Image Currency Dataset (CC0), Imagenette (fast.ai), Pakistani Currency Notes Dataset (Roboflow, CC BY 4.0){{OWN_CREDIT}}. Voice: Microsoft neural voices (Uzma, Urdu).
 </div></footer>
-<script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.20.1/dist/ort.min.js"></script>
+<script src="vendor/ort/ort.min.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

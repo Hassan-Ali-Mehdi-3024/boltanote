@@ -31,7 +31,7 @@ def table(rows, head):
 rows = []
 for m, r in runs.items():
     rows.append([NICE[m] + (" <b>(deployed)</b>" if m == best else ""), f"{r['params_million']}M", f"{r['onnx_mb']} MB", f"{r['onnx_cpu_ms']:.0f}",
-                 *[pct(r[s]["value_accuracy"]) if s in r else "–" for s in ("test", "external", "own")], f"{r['speaking_threshold']:.2f}"])
+                 *[pct(r[s]["value_accuracy"]) if s in r else "–" for s in ("test", "external", "own") if s != "own" or "own" in B], f"{r['speaking_threshold']:.2f}"])
 speak_rows = []
 for s in tests:
     sp = B[s]["speaking"]
@@ -50,7 +50,7 @@ if "mobilenetv3_large" in runs and "mobilenetv4_conv_medium" in runs:
                  f"({v4['onnx_cpu_ms'] / v3['onnx_cpu_ms']:.1f}× slower, {v4['params_million'] / v3['params_million']:.1f}× the parameters). ")
 own_txt = (f"On {own['n']} photos of our own notes, taken with a phone in ordinary rooms and never used for any decision, the deployed model names the value "
            f"correctly {pct(own['value_accuracy'])} of the time and, at its speaking threshold, would say a wrong value on {pct(own['speaking']['wrong_value_rate'])} of them."
-           if own else "The test on our own photos was still being collected when this version was written.")
+           if own else "")
 
 ref = [
     "Hassan B, et al. A comprehensive study capturing vision loss burden in Pakistan (1990–2025): findings from the Global Burden of Disease (GBD) 2017 study. <i>PLoS One</i> 14(5), 2019.",
@@ -92,19 +92,19 @@ ol.refs{{font-size:8.8pt;padding-left:18px}} .key{{background:#eef6f0;border-lef
 </style></head><body>
 <h1>A talking Pakistani banknote reader for blind people, tested beyond its own dataset</h1>
 <div class="meta">{html.escape(links['author'])} · BS Computer Science (7A), Superior University, Lahore · Deep Learning, instructor Dr. Munir Ahmad · {links.get('month', 'November 2026')}<br>
-Live demo: <a href="{links.get('site') or '#'}">{links.get('site') or '(Vercel link)'}</a> · Code, weights &amp; photos: <a href="{links['github']}">{links['github']}</a>{(' · Video: <a href="' + links['youtube'] + '">' + links['youtube'] + '</a>') if links.get('youtube') else ''}</div>
+Live demo: <a href="{links.get('site') or '#'}">{links.get('site') or '(Vercel link)'}</a> · Code, weights &amp; {'photos' if own else 'data splits'}: <a href="{links['github']}">{links['github']}</a>{(' · Video: <a href="' + links['youtube'] + '">' + links['youtube'] + '</a>') if links.get('youtube') else ''}</div>
 
 <div class="abstract"><b>Abstract.</b> Blind people in Pakistan (about 1.1 million [1]) cannot tell banknotes apart without help, and a Rs 500 / Rs 5,000 mix-up costs Rs 4,500. The reader is a web app that reads the phone camera about four times a second and says the note's value aloud in Urdu (<span class="ur">پانچ سو روپے</span>) or English, offline once loaded. We fine-tune MobileNetV3-Large [2] and MobileNetV4-Conv-Medium [3] and train a CNN from scratch on a public dataset of 3,611 phone photos (15 classes: seven notes × front/back, plus "no note"). Before measuring anything we checked how much the public data repeats itself: {D['roboflow_dropped']} of the {D['roboflow_total']} test photos in a second public currency dataset are near-copies of the first, leaving {D['roboflow_kept']} genuinely new photos. The deployed {NICE[best]} scores {pct(B['test']['value_accuracy'])} on unseen photos from the training dataset but {pct(ext['value_accuracy']) if ext else '–'} on photos by other people{(' and ' + pct(own['value_accuracy']) + ' on ' + str(own['n']) + ' photos of our own notes') if own else ''}. Because saying a wrong amount is worse than saying nothing, the app speaks only above a confidence threshold calibrated on a stress-tested validation set.</div>
 
 <h2>1. Problem</h2>
 <p>Cash is still how most everyday purchases in Pakistan are paid. The seven notes in circulation (Rs 10 to Rs 5,000) differ only modestly in size, so a blind person usually has to ask someone and trust the answer. Commercial apps exist for some currencies, but an assistant for Pakistani notes should work on cheap phones, speak Urdu, and need no installation. The cost of errors is asymmetric: silence just means "move the note and try again", while a wrong value can cost real money.</p>
-<p><b>Contributions.</b> (1) A working Urdu-speaking reader that runs in any phone browser. (2) A measurement of hidden duplication in public currency datasets, and an evaluation that goes beyond the training dataset: other photographers and our own photos. (3) A speaking rule that trades coverage for safety, calibrated without touching test data. (4) An accuracy-versus-speed comparison of three architectures for phones.</p>
+<p><b>Contributions.</b> (1) A working Urdu-speaking reader that runs in any phone browser. (2) A measurement of hidden duplication in public currency datasets, and an evaluation that goes beyond the training dataset: other photographers{" and our own photos" if own else ""}. (3) A speaking rule that trades coverage for safety, calibrated without touching test data. (4) An accuracy-versus-speed comparison of three architectures for phones.</p>
 
 <h2>2. Data</h2>
 <p><b>Training data.</b> The Pakistan Image Currency Dataset [7] (CC0) has 3,611 phone photos of the 2005–2008 note series, each value front and back, many folded, partly visible, or in a hand, plus 280 "other" photos. We add 1,000 Imagenette photos [6] (100 per class) to the "no note" class so the model learns to stay silent.</p>
 <p><b>Duplicate check.</b> We computed a 64-bit perceptual hash [9] of every photo and joined photos within 8 bits of each other. Inside the training dataset, near-copies are kept on the same side of the 70 / 15 / 15 per-class split (seed 42). Against the Roboflow currency dataset [8], which we intended as an independent test, <b>{D['roboflow_dropped']} of {D['roboflow_total']}</b> single-note test photos turned out to be near-copies of training photos; only {D['roboflow_kept']} remain as a genuine external test. Without this check that external test would have reported near-perfect accuracy.</p>
-<p><b>Our own photos.</b> {('We photographed our own notes with a phone: flat, folded, in hand, partly covered, in dim and yellow light, on different backgrounds, plus photos with no note. ' + str(own['n']) + ' photos, sorted by value in <code>data/own_photos</code>, used only for testing.') if own else 'Being collected: about 300 photos of our own notes under real conditions, used only for testing.'}</p>
-{table([["Train", "3,429"], ["Validation", "735"], ["Same-dataset test", "727"], ["External test (other photographers)", str(D['roboflow_kept'])], ["Our own photos", str(own['n']) if own else "–"]], ["Split", "Photos"])}
+{('<p><b>Our own photos.</b> We photographed our own notes with a phone: flat, folded, in hand, partly covered, in dim and yellow light, on different backgrounds, plus photos with no note. ' + str(own['n']) + ' photos, sorted by value in <code>data/own_photos</code>, used only for testing.</p>') if own else ''}
+{table([["Train", "3,429"], ["Validation", "735"], ["Same-dataset test", "727"], ["External test (other photographers)", str(D['roboflow_kept'])]] + ([["Our own photos", str(own['n'])]] if own else []), ["Split", "Photos"])}
 
 <h2>3. Method</h2>
 <p>Each model sees the whole camera frame squeezed to 224 × 224 (the same preprocessing in training, <code>predict.py</code> and the browser) and outputs 15 class probabilities; front and back are separate classes because they look nothing alike, and the app adds them per value. Augmentation is designed around how blind users actually hold notes: any rotation, too close or too far, half the note out of frame, fingers over it, dim or yellow light, motion blur. Mirror flips are excluded because the camera never sees a mirrored note.</p>
@@ -112,7 +112,7 @@ Live demo: <a href="{links.get('site') or '#'}">{links.get('site') or '(Vercel l
 <div class="key"><b>When to speak.</b> On ordinary validation photos the model is almost never wrong, so any threshold looks safe there (the lowest we searched, {B['threshold_from_clean_val']:.2f}, already gives no more than 1 wrong answer in 500). Modern networks are over-confident on data like their training data [10]. We therefore calibrate on a <i>stress</i> validation set: each validation photo four times with the training augmentations. Because a wrong amount costs real money, we require at most 1 wrong value in 500 there (0.2%); the lowest threshold that achieves it is <b>{B['speaking_threshold']:.2f}</b>. The app additionally requires the same answer in three consecutive frames before speaking.</div>
 
 <h2>4. Results</h2>
-{table(rows, ["Model", "Params", "ONNX", "CPU ms", "Same-dataset test", "Other photographers", "Own photos", "Threshold"])}
+{table(rows, ["Model", "Params", "ONNX", "CPU ms", "Same-dataset test", "Other photographers", *(["Own photos"] if own else []), "Threshold"])}
 <p>All models are near-perfect on unseen photos from the training dataset, which mostly shows how similar those photos are to each other. The informative columns are the other two: {('on photos by other people the deployed model drops by ' + f'{gap * 100:.1f}' + ' points') if gap is not None else ''}{(', and the scratch CNN, which matched the pretrained models on the same-dataset test, falls to ' + pct(scratch['external']['value_accuracy'])) if scratch and scratch.get('external') else ''}. ImageNet pretraining buys robustness that the in-dataset test cannot show. {speed_txt}{own_txt}</p>
 {table(speak_rows, ["Test set", "Photos", "Value accuracy", "Says wrong value", "Speaks on note photos", "Correct when speaking", "Speaks with no note"])}
 {table(recall_rows, ["Value", *[LBL[s] for s in tests]])}
@@ -123,7 +123,7 @@ Live demo: <a href="{links.get('site') or '#'}">{links.get('site') or '(Vercel l
 <figure><img src="figures/training_curves.png"><figcaption>Figure {5 if own else 4}. Training loss and validation accuracy.</figcaption></figure>
 
 <h2>5. Deployment</h2>
-<p>The deployed model is exported to ONNX (opset 17, {B['onnx_mb']} MB, softmax included) and TorchScript. The website runs it with ONNX Runtime Web on the phone, on the live rear camera, about four frames a second; the speech is pre-recorded with neural Urdu and English voices so it works even on phones without Urdu text-to-speech, and Android phones also vibrate a code (1–4 short pulses for Rs 10–100, 1–3 long for Rs 500–5,000). Results are announced in an ARIA live region so screen readers (TalkBack, VoiceOver) read them too. The repository holds code, splits, own photos, all weights with SHA-256 hashes in <code>model_card.json</code>, the executed notebook, and a GitHub Actions test.</p>
+<p>The deployed model is exported to ONNX (opset 17, {B['onnx_mb']} MB, softmax included) and TorchScript. The website runs it with ONNX Runtime Web on the phone, on the live rear camera, about four frames a second; the speech is pre-recorded with neural Urdu and English voices so it works even on phones without Urdu text-to-speech, and Android phones also vibrate a code (1–4 short pulses for Rs 10–100, 1–3 long for Rs 500–5,000). Results are announced in an ARIA live region so screen readers (TalkBack, VoiceOver) read them too. The repository holds code, splits, {'own photos, ' if own else ''}all weights with SHA-256 hashes in <code>model_card.json</code>, the executed notebook, and a GitHub Actions test.</p>
 
 <h2>6. Limitations</h2>
 <ul><li>The training photos show a few physical notes per value on similar indoor backgrounds; very worn, torn or taped notes are under-represented.</li>

@@ -1,0 +1,217 @@
+WEBVTT
+
+00:00:02.600 --> 00:00:03.940
+Assalam o alaikum.
+
+00:00:04.200 --> 00:00:07.840
+I'm Hassan Ali Mehdi and this is a Pakistani banknote reader for
+
+00:00:07.720 --> 00:00:08.500
+blind people.
+
+00:00:08.939 --> 00:00:12.579
+You point your phone at a note and it tells you the value out loud
+
+00:00:12.459 --> 00:00:13.299
+in Urdu.
+
+00:00:14.980 --> 00:00:19.700
+Pakistan has about 1.1 million blind people and most daily payments
+
+00:00:19.580 --> 00:00:20.760
+are still made in cash.
+
+00:00:21.320 --> 00:00:25.280
+Our seven notes differ only a little in size so a blind person usually
+
+00:00:25.160 --> 00:00:27.580
+has to ask a stranger which note is which,
+
+00:00:27.860 --> 00:00:28.800
+and trust the answer.
+
+00:00:29.200 --> 00:00:34.339
+Mixing up a 500 and a 5000 costs 4,500 rupees.
+
+00:00:35.620 --> 00:00:37.339
+The reader is just a webpage.
+
+00:00:37.719 --> 00:00:41.539
+It reads the camera 4 times a second and speaks the value in Urdu
+
+00:00:41.420 --> 00:00:43.600
+or English with a recorded voice.
+
+00:00:43.940 --> 00:00:46.539
+So it works even on phones that have no Urdu speech.
+
+00:00:47.100 --> 00:00:50.719
+It stays silent when it is unsure because saying a wrong amount
+
+00:00:50.600 --> 00:00:52.199
+is worse than saying nothing.
+
+00:00:52.600 --> 00:00:56.839
+Once loaded, it works offline, it also vibrates a code and it
+
+00:00:56.719 --> 00:00:58.019
+works with screen readers.
+
+00:00:59.300 --> 00:01:03.560
+I trained on a public dataset of 3,600 real phone photos,
+
+00:01:03.960 --> 00:01:07.760
+7 notes front and back, many folded or half visible.
+
+00:01:08.159 --> 00:01:12.439
+I added a no note class with more than 1000 everyday photos so
+
+00:01:12.319 --> 00:01:14.280
+the model learns when to stay quiet.
+
+00:01:15.559 --> 00:01:18.679
+Before trusting any number I checked whether the test photos were
+
+00:01:18.559 --> 00:01:19.200
+really new.
+
+00:01:19.539 --> 00:01:25.700
+I hashed every photo and found that 339 of the 402 test photos
+
+00:01:25.579 --> 00:01:30.179
+in a second public currency dataset are near copies of the first
+
+00:01:30.059 --> 00:01:30.620
+one.
+
+00:01:31.019 --> 00:01:33.519
+Only 63 were genuinely new.
+
+00:01:33.839 --> 00:01:37.179
+Without this check my external test would have looked perfect and
+
+00:01:37.059 --> 00:01:37.799
+meant nothing.
+
+00:01:39.179 --> 00:01:44.340
+Training images are changed on the GPU every time they are seen:
+
+00:01:44.219 --> 00:01:47.079
+any angle, too close, half out of frame,
+
+00:01:46.959 --> 00:01:49.719
+fingers over the note, dim or yellow light,
+
+00:01:49.599 --> 00:01:50.420
+and blur.
+
+00:01:50.299 --> 00:01:54.700
+No mirror flips because the camera never sees a mirrored note.
+
+00:01:55.979 --> 00:02:02.079
+I compared a CNN trained from scratch with two phone networks pre
+
+00:02:01.959 --> 00:02:04.859
+trained on ImageNet: MobileNet version 3,
+
+00:02:04.739 --> 00:02:07.280
+and the new MobileNet version 4.
+
+00:02:07.159 --> 00:02:11.080
+On photos from the same dataset, all three are almost perfect.
+
+00:02:11.479 --> 00:02:14.379
+On photos taken by other people the difference shows:
+
+00:02:14.259 --> 00:02:17.819
+transfer learning holds up far better.
+
+00:02:18.219 --> 00:02:21.199
+I deployed MobileNet version 3 Large,
+
+00:02:21.079 --> 00:02:24.199
+the best on validation and also the fastest.
+
+00:02:25.579 --> 00:02:27.280
+Here are the honest numbers.
+
+00:02:27.859 --> 00:02:32.280
+100% on unseen photos from the same dataset but 92% on photos
+
+00:02:32.159 --> 00:02:33.180
+by other people.
+
+00:02:33.759 --> 00:02:37.099
+And on those photos, it never said a wrong amount.
+
+00:02:37.500 --> 00:02:41.139
+The first number mostly shows how alike the dataset photos are.
+
+00:02:41.560 --> 00:02:43.900
+The others are what a real user would get.
+
+00:02:45.280 --> 00:02:48.139
+The most important design decision is when to speak.
+
+00:02:48.680 --> 00:02:52.419
+On ordinary validation photos, the model is almost never wrong.
+
+00:02:52.819 --> 00:02:54.199
+So any threshold looks safe.
+
+00:02:54.719 --> 00:02:59.080
+So I calibrated on a stress test: every validation photo four times.
+
+00:02:59.479 --> 00:03:04.340
+The app speaks only above 0.68 confidence and only when three
+
+00:03:04.219 --> 00:03:05.500
+frames in a row agree.
+
+00:03:06.879 --> 00:03:08.240
+Here is a live demo.
+
+00:03:08.639 --> 00:03:13.639
+I open the site on my phone, tap start camera and hold a note in
+
+00:03:13.519 --> 00:03:14.180
+front of it.
+
+00:03:14.699 --> 00:03:18.120
+It reads several frames per second and speaks the value with nothing
+
+00:03:18.000 --> 00:03:18.599
+installed.
+
+00:03:19.979 --> 00:03:20.599
+Its limits.
+
+00:03:21.000 --> 00:03:23.580
+The training photos only show a few physical notes,
+
+00:03:23.460 --> 00:03:24.319
+per value.
+
+00:03:24.719 --> 00:03:28.460
+It knows the current note design but not the State Bank's new series.
+
+00:03:29.000 --> 00:03:33.400
+It reads one note at a time and it does not detect counterfeits.
+
+00:03:33.799 --> 00:03:38.939
+Next, worn notes counting a whole handful and test with blind users
+
+00:03:38.819 --> 00:03:40.300
+is what's coming next.
+
+00:03:41.579 --> 00:03:42.800
+Everything is open.
+
+00:03:42.919 --> 00:03:44.620
+The website, the code, the weights,
+
+00:03:44.939 --> 00:03:46.879
+the data splits are all linked.
+
+00:03:47.280 --> 00:03:48.120
+Thank you for watching.

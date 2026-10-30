@@ -9,3 +9,4 @@ evaluation.json
 docs/slides/_html/
 docs/slides/audio/
 docs/slides/png/
+!web/downloads/*.zip

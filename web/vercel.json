@@ -1,13 +1,84 @@
 {
   "headers": [
     {
-      "source": "/(model|audio)/(.*)",
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(self)"
+        }
+      ]
+    },
+    {
+      "source": "/(model|audio|vendor|samples|icons|video)/(.*)",
       "headers": [
         {
           "key": "Cache-Control",
           "value": "public, max-age=604800"
         }
       ]
+    },
+    {
+      "source": "/sw.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache"
+        }
+      ]
+    },
+    {
+      "source": "/(project.json|model_card.json|llms.txt|llms-full.txt|sitemap.xml|robots.txt|report.pdf|slides.pdf)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        }
+      ]
+    },
+    {
+      "source": "/model/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        }
+      ]
+    },
+    {
+      "source": "/(llms.txt|llms-full.txt)",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/plain; charset=utf-8"
+        }
+      ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/linkedin",
+      "destination": "/#linkedin",
+      "permanent": false
+    },
+    {
+      "source": "/video",
+      "destination": "/#film",
+      "permanent": false
+    },
+    {
+      "source": "/slides",
+      "destination": "/slides.pdf",
+      "permanent": false
+    },
+    {
+      "source": "/github",
+      "destination": "https://github.com/Hassan-Ali-Mehdi-3024/boltanote",
+      "permanent": false
     }
   ]
 }

@@ -18,7 +18,7 @@ function localGet(k) { try { return localStorage.getItem("boltanote." + k); } ca
 function localSet(k, v) { try { localStorage.setItem("boltanote." + k, v); } catch {} }
 
 async function init() {
-  ort.env.wasm.wasmPaths = "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.20.1/dist/";
+  ort.env.wasm.wasmPaths = new URL("vendor/ort/", document.baseURI).href;
   setLang(lang);
   setVibrate(vibrate);
   try {
@@ -187,3 +187,6 @@ $("#vib").addEventListener("click", () => setVibrate(!vibrate));
 $("#again").addEventListener("click", () => { if (lastSaid) say(lastSaid); });
 $("#file").addEventListener("change", (e) => { const f = e.target.files[0]; if (f) still(URL.createObjectURL(f), null); });
 init();
+
+// Saves the reader on the phone so it also opens with no internet.
+if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));

@@ -3,19 +3,159 @@
   "task": "Pakistani banknote recognition for blind and low-vision people",
   "author": "Hassan Ali Mehdi",
   "course": "Deep Learning, Superior University (Dr. Munir Ahmad)",
+  "updated": "2026-10-30",
   "links": {
+    "site": "https://boltanote.vercel.app",
     "github": "https://github.com/Hassan-Ali-Mehdi-3024/boltanote",
-    "dataset": "https://www.kaggle.com/datasets/rafayqayyum/pakistan-image-currency-dataset",
-    "dataset_external": "https://www.kaggle.com/datasets/muhammadasjadali/pakistani-currency-notes",
+    "youtube": "https://youtu.be/P0O-qhMldGI",
+    "report": "https://boltanote.vercel.app/report.pdf",
+    "report_web": "https://boltanote.vercel.app/report/",
+    "slides": "https://boltanote.vercel.app/slides.pdf",
     "weights_onnx": "https://github.com/Hassan-Ali-Mehdi-3024/boltanote/raw/main/weights/boltanote.onnx",
     "weights_torchscript": "https://github.com/Hassan-Ali-Mehdi-3024/boltanote/raw/main/weights/boltanote_torchscript.pt",
     "weights_pt": "https://github.com/Hassan-Ali-Mehdi-3024/boltanote/tree/main/weights",
     "notebook": "https://github.com/Hassan-Ali-Mehdi-3024/boltanote/blob/main/notebooks/BoltaNote_train.ipynb",
-    "report": "https://boltanote.vercel.app/report.pdf",
-    "slides": "https://boltanote.vercel.app/slides.pdf",
-    "youtube": "https://youtu.be/Je7tUmXsgO8",
-    "model_card": "model_card.json",
-    "site": "https://boltanote.vercel.app"
+    "splits": "https://github.com/Hassan-Ali-Mehdi-3024/boltanote/blob/main/data/splits.csv",
+    "dataset": "https://www.kaggle.com/datasets/rafayqayyum/pakistan-image-currency-dataset",
+    "dataset_external": "https://www.kaggle.com/datasets/muhammadasjadali/pakistani-currency-notes",
+    "dataset_none": "https://github.com/fastai/imagenette",
+    "model_card": "https://boltanote.vercel.app/model_card.json",
+    "project_json": "https://boltanote.vercel.app/project.json"
+  },
+  "copies": {
+    "site": {
+      "title": "This website",
+      "what": "the live reader and this page (Vercel, GitHub Pages)",
+      "urls": [
+        "https://boltanote.vercel.app",
+        "https://hassan-ali-mehdi-3024.github.io/boltanote/"
+      ]
+    },
+    "github": {
+      "title": "GitHub repository",
+      "what": "code, weights, splits, notebook; second copy is the source code as a zip",
+      "urls": [
+        "https://github.com/Hassan-Ali-Mehdi-3024/boltanote",
+        "https://boltanote.vercel.app/downloads/boltanote-source.zip"
+      ]
+    },
+    "youtube": {
+      "title": "Video presentation (YouTube)",
+      "what": "under four minutes, in my own voice; also on this site, and as a 4K download",
+      "urls": [
+        "https://youtu.be/P0O-qhMldGI",
+        "https://boltanote.vercel.app/video/pakistani-banknote-reader-film.mp4",
+        "https://github.com/Hassan-Ali-Mehdi-3024/boltanote/releases/download/v1.0/Pakistani_Banknote_Reader_film_4K60.mp4"
+      ]
+    },
+    "report": {
+      "title": "Report (PDF)",
+      "what": "full write-up",
+      "urls": [
+        "https://boltanote.vercel.app/report.pdf",
+        "https://github.com/Hassan-Ali-Mehdi-3024/boltanote/raw/main/docs/BoltaNote_report.pdf"
+      ]
+    },
+    "report_web": {
+      "title": "Report (web page)",
+      "what": "the same report, as a page",
+      "urls": [
+        "https://boltanote.vercel.app/report/",
+        "https://hassan-ali-mehdi-3024.github.io/boltanote/report/"
+      ]
+    },
+    "slides": {
+      "title": "Presentation slides (PDF)",
+      "what": "the deck",
+      "urls": [
+        "https://boltanote.vercel.app/slides.pdf",
+        "https://github.com/Hassan-Ali-Mehdi-3024/boltanote/raw/main/docs/slides/BoltaNote_slides.pdf"
+      ]
+    },
+    "weights_onnx": {
+      "title": "Model weights (ONNX)",
+      "what": "the deployed model, weights/boltanote.onnx",
+      "urls": [
+        "https://github.com/Hassan-Ali-Mehdi-3024/boltanote/raw/main/weights/boltanote.onnx",
+        "https://boltanote.vercel.app/model/boltanote.onnx"
+      ]
+    },
+    "weights_torchscript": {
+      "title": "Model weights (TorchScript)",
+      "what": "weights/boltanote_torchscript.pt",
+      "urls": [
+        "https://github.com/Hassan-Ali-Mehdi-3024/boltanote/raw/main/weights/boltanote_torchscript.pt",
+        "https://github.com/Hassan-Ali-Mehdi-3024/boltanote/releases/download/v1.0/boltanote_torchscript.pt"
+      ]
+    },
+    "weights_pt": {
+      "title": "PyTorch checkpoints",
+      "what": "weights/*.pt, all three models",
+      "urls": [
+        "https://github.com/Hassan-Ali-Mehdi-3024/boltanote/tree/main/weights",
+        "https://github.com/Hassan-Ali-Mehdi-3024/boltanote/releases/tag/v1.0"
+      ]
+    },
+    "notebook": {
+      "title": "Training notebook",
+      "what": "Colab, all outputs",
+      "urls": [
+        "https://github.com/Hassan-Ali-Mehdi-3024/boltanote/blob/main/notebooks/BoltaNote_train.ipynb",
+        "https://boltanote.vercel.app/notebooks/BoltaNote_train.ipynb"
+      ]
+    },
+    "splits": {
+      "title": "Data splits (CSV)",
+      "what": "every file and its split",
+      "urls": [
+        "https://github.com/Hassan-Ali-Mehdi-3024/boltanote/blob/main/data/splits.csv",
+        "https://boltanote.vercel.app/data/splits.csv"
+      ]
+    },
+    "dataset": {
+      "title": "Main dataset",
+      "what": "Pakistan Image Currency Dataset, CC0; Kaggle and an unchanged mirror",
+      "urls": [
+        "https://www.kaggle.com/datasets/rafayqayyum/pakistan-image-currency-dataset",
+        "https://github.com/Hassan-Ali-Mehdi-3024/boltanote/releases/download/v1.0/pakistan-image-currency-dataset.zip"
+      ]
+    },
+    "dataset_external": {
+      "title": "External test set",
+      "what": "Roboflow currency notes, CC BY 4.0; Kaggle and an unchanged mirror",
+      "urls": [
+        "https://www.kaggle.com/datasets/muhammadasjadali/pakistani-currency-notes",
+        "https://github.com/Hassan-Ali-Mehdi-3024/boltanote/releases/download/v1.0/pakistani-currency-notes-roboflow.zip"
+      ]
+    },
+    "dataset_none": {
+      "title": "\"No note\" photos (Imagenette)",
+      "what": "fast.ai's ImageNet subset; project page and download",
+      "urls": [
+        "https://github.com/fastai/imagenette",
+        "https://s3.amazonaws.com/fast-ai-imageclas/imagenette2-160.tgz"
+      ]
+    },
+    "model_card": {
+      "title": "Model card (JSON)",
+      "what": "inputs, outputs, threshold, metrics",
+      "urls": [
+        "https://boltanote.vercel.app/model_card.json",
+        "https://github.com/Hassan-Ali-Mehdi-3024/boltanote/raw/main/model_card.json"
+      ]
+    },
+    "project_json": {
+      "title": "Project summary (JSON)",
+      "what": "every result and link, for machines",
+      "urls": [
+        "https://boltanote.vercel.app/project.json",
+        "https://hassan-ali-mehdi-3024.github.io/boltanote/project.json"
+      ]
+    }
+  },
+  "linkedin": {
+    "posted": false,
+    "note": "Due to legal commitments with the company where I work, I can't use my LinkedIn for personal use while I'm employed there."
   },
   "datasets": [
     {
@@ -98,7 +238,9 @@
     },
     "external_test": {
       "photos": 63,
-      "value_accuracy": 0.9206349206349206
+      "value_accuracy": 0.9206349206349206,
+      "wrong_value_rate": 0.0,
+      "coverage_on_notes": 0.873015873015873
     },
     "own_photos": null
   },
@@ -134,5 +276,74 @@
     "cnn_scratch.pt": "https://github.com/Hassan-Ali-Mehdi-3024/boltanote/raw/main/weights/cnn_scratch.pt",
     "mobilenetv3_large.pt": "https://github.com/Hassan-Ali-Mehdi-3024/boltanote/raw/main/weights/mobilenetv3_large.pt",
     "mobilenetv4_conv_medium.pt": "https://github.com/Hassan-Ali-Mehdi-3024/boltanote/raw/main/weights/mobilenetv4_conv_medium.pt"
-  }
+  },
+  "weights_files_copies": {
+    "boltanote.onnx": "https://github.com/Hassan-Ali-Mehdi-3024/boltanote/releases/download/v1.0/boltanote.onnx",
+    "boltanote_torchscript.pt": "https://github.com/Hassan-Ali-Mehdi-3024/boltanote/releases/download/v1.0/boltanote_torchscript.pt",
+    "cnn_scratch.pt": "https://github.com/Hassan-Ali-Mehdi-3024/boltanote/releases/download/v1.0/cnn_scratch.pt",
+    "mobilenetv3_large.pt": "https://github.com/Hassan-Ali-Mehdi-3024/boltanote/releases/download/v1.0/mobilenetv3_large.pt",
+    "mobilenetv4_conv_medium.pt": "https://github.com/Hassan-Ali-Mehdi-3024/boltanote/releases/download/v1.0/mobilenetv4_conv_medium.pt"
+  },
+  "faq": [
+    {
+      "question": "What is the Pakistani Banknote Reader?",
+      "answer": "A free web app for blind and low-vision people in Pakistan. You point a phone camera at a banknote and it says the value out loud in Urdu or English. It runs in the browser, so there is no app to install."
+    },
+    {
+      "question": "How do I use it?",
+      "answer": "Open https://boltanote.vercel.app in a phone browser, tap Start camera, and hold a note in front of the camera. It says the value as soon as it is sure. With no camera, you can upload a photo or tap a test photo."
+    },
+    {
+      "question": "Which Pakistani notes can it read?",
+      "answer": "All seven notes in circulation: Rs 10, 20, 50, 100, 500, 1,000 and 5,000, front or back, including folded or upside down. It knows the 2005–2008 designs, not the State Bank's new series."
+    },
+    {
+      "question": "Is it free, and does it need an account?",
+      "answer": "It is free, with no account and no install. The code is open source under the MIT licence."
+    },
+    {
+      "question": "Does it work offline?",
+      "answer": "Yes, after the first visit. The model, the runtime and the voice clips are saved on the phone, so it keeps working and reopens with no internet."
+    },
+    {
+      "question": "Are my camera pictures uploaded anywhere?",
+      "answer": "No. Every picture is processed on the phone, inside the browser. Nothing is sent to a server."
+    },
+    {
+      "question": "How accurate is it?",
+      "answer": "It names the value correctly on 100.0% of 727 unseen photos from the same dataset, and 92.1% of 63 photos taken by other people. On those 63 photos it spoke no wrong amount and stayed silent on 8. The first number mostly shows how alike the dataset's photos are; the second is closer to real use, but 63 photos is a small test."
+    },
+    {
+      "question": "When does it stay silent?",
+      "answer": "It speaks only when it is at least 68% sure and three frames in a row agree, because saying a wrong amount is worse than saying nothing. The 0.68 threshold keeps wrong answers to at most 1 in 500 on a stress test of 2,940 hard, augmented validation photos."
+    },
+    {
+      "question": "Does it work with screen readers?",
+      "answer": "It is built for them: results are announced to TalkBack and VoiceOver through a live region, every control is a large button, and on Android it also vibrates a code for each note. It has not yet been tested with blind users; that is the next step."
+    },
+    {
+      "question": "Can it detect counterfeit notes?",
+      "answer": "No. It reads the value of a note and does not check whether the note is genuine. It also reads only one note at a time."
+    },
+    {
+      "question": "Which model does it use?",
+      "answer": "MobileNetV3-Large, pretrained on ImageNet and fine-tuned to 15 classes: seven notes, front and back, plus \"no note\". It runs with ONNX Runtime Web and takes about 15 ms per photo on a CPU. It was compared with a CNN trained from scratch and MobileNetV4."
+    },
+    {
+      "question": "What data was it trained on?",
+      "answer": "The Pakistan Image Currency Dataset (CC0) of 3,611 phone photos, plus 1,000 Imagenette photos for the \"no note\" class. A hash check found 339 of 402 photos in a second public dataset were near-copies of the first, so only the 63 new ones were used as the external test."
+    },
+    {
+      "question": "Who made it?",
+      "answer": "Hassan Ali Mehdi, as a Deep Learning semester project at Superior University, Lahore (BSCS-7A), under Dr. Munir Ahmad, November 2026."
+    },
+    {
+      "question": "Where are the code, weights and report?",
+      "answer": "The code, weights and data splits are at https://github.com/Hassan-Ali-Mehdi-3024/boltanote, and the report is at https://boltanote.vercel.app/report.pdf. Every link, with a second copy, is in the Everything, linked section of this page."
+    },
+    {
+      "question": "Is there a LinkedIn post?",
+      "answer": "No. Due to legal commitments with the company where I work, I can't use my LinkedIn for personal use while I'm employed there."
+    }
+  ]
 }

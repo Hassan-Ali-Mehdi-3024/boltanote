@@ -12,7 +12,15 @@
   "model_card": "model_card.json",
   "report": "https://boltanote.vercel.app/report.pdf",
   "slides": "https://boltanote.vercel.app/slides.pdf",
-  "youtube": "https://youtu.be/Je7tUmXsgO8",
+  "youtube": "https://youtu.be/P0O-qhMldGI",
   "linkedin": "",
-  "site": "https://boltanote.vercel.app"
+  "site": "https://boltanote.vercel.app",
+  "linkedin_note": "Due to legal commitments with the company where I work, I can't use my LinkedIn for personal use while I'm employed there.",
+  "pages": "https://hassan-ali-mehdi-3024.github.io/boltanote",
+  "release": "https://github.com/Hassan-Ali-Mehdi-3024/boltanote/releases/download/v1.0",
+  "release_page": "https://github.com/Hassan-Ali-Mehdi-3024/boltanote/releases/tag/v1.0",
+  "youtube_channel": "https://www.youtube.com/@hassanalimehdi4217",
+  "video_date": "2026-10-31",
+  "video_seconds": 234,
+  "indexnow_key": "dded7b6e3e425ed247a6e099e04448a3"
 }

@@ -25,14 +25,29 @@ example = subprocess.run([sys.executable, "predict.py", "samples/500_front_1.jpg
 example = json.dumps({k: v for k, v in json.loads(example).items() if k != "file"}, indent=1, ensure_ascii=False)
 n_own = sum(len([f for f in os.listdir(os.path.join("data/own_photos", d))]) for d in os.listdir("data/own_photos")) if os.path.isdir("data/own_photos") else 0
 
+results_table = open('results/results.md').read()
+if not n_own:  # the own-photos column stays out until those photos exist
+    table = []
+    for line in results_table.splitlines():
+        if line.startswith("|"):
+            cells = line.split("|")
+            if len(cells) > 5:
+                del cells[5]
+            line = "|".join(cells).replace("(test / other / own)", "(test / other)")
+        table.append(line)
+    results_table = "\n".join(table) + "\n"
+project = json.load(open("web/project.json", encoding="utf-8"))
+short = lambda u: u.replace("https://", "")
+copies_table = "\n".join(f"| {c['title']} | [{short(c['urls'][0])}]({c['urls'][0]}) | [{short(c['urls'][1])}]({c['urls'][1]}) |" for c in project["copies"].values())
+
 md = f"""# Pakistani Banknote Reader
 
 [![test](https://github.com/{slug}/actions/workflows/test.yml/badge.svg)](https://github.com/{slug}/actions/workflows/test.yml)
-![license](https://img.shields.io/badge/code-MIT-blue) ![data](https://img.shields.io/badge/data-CC0%20%2B%20own%20photos-yellow)
+![license](https://img.shields.io/badge/code-MIT-blue) ![data](https://img.shields.io/badge/data-{"CC0%20%2B%20own%20photos" if n_own else "CC0%20%2B%20CC%20BY"}-yellow)
 
 **A talking banknote reader for blind people in Pakistan. Point the phone camera at a note; it says the value out loud in Urdu (or English). Runs in any phone browser, offline once loaded.**
 
-{L('site', 'Live demo')} · {L('report', 'Report (PDF)')} · {L('slides', 'Slides')} · {L('youtube', 'Video')} · {L('linkedin', 'LinkedIn post')} · [Dataset (Kaggle)]({links['dataset']}) · [Model card](model_card.json)
+{L('site', 'Live demo')} · {L('report', 'Report (PDF)')} · {L('slides', 'Slides')} · {L('youtube', 'Video')} · [LinkedIn: not posted](#linkedin) · [Dataset (Kaggle)]({links['dataset']}) · [Model card](model_card.json)
 
 Deep Learning semester project, BSCS-7A, Superior University, Lahore. Instructor: Dr. Munir Ahmad. Author: {links['author']}.
 
@@ -40,9 +55,9 @@ Deep Learning semester project, BSCS-7A, Superior University, Lahore. Instructor
 
 ## Results
 
-{open('results/results.md').read()}
+{results_table}
 - Deployed: **{card['architecture']}**, chosen on validation accuracy.
-- Same-dataset test: {pct(B['test']['value_accuracy'])} of {B['test']['n']} unseen photos. **Other photographers** ({ext['n'] if ext else 0} photos): {pct(ext['value_accuracy']) if ext else '–'}. **Our own photos**: {(pct(own['value_accuracy']) + ' of ' + str(own['n'])) if own else 'being collected'}.
+- Same-dataset test: {pct(B['test']['value_accuracy'])} of {B['test']['n']} unseen photos. **Other photographers** ({ext['n'] if ext else 0} photos): {pct(ext['value_accuracy']) if ext else '–'}.{(' **Our own photos**: ' + pct(own['value_accuracy']) + ' of ' + str(own['n']) + '.') if own else ''}
 - The app speaks only when the top value's probability is ≥ **{B['speaking_threshold']:.2f}** (and 3 frames agree). That threshold keeps wrong values ≤ 1 in 500 (0.2%) on a stress-tested validation set (each validation photo × 4 augmentations); no test photo was used to set it.
 - **Duplicate check:** {D['roboflow_dropped']} of {D['roboflow_total']} test photos in the second public dataset are near-copies (perceptual hash ≤ 8 bits) of the training dataset's photos; only {D['roboflow_kept']} are used as the external test.
 
@@ -118,6 +133,18 @@ docs/                            report (PDF + HTML), slides (PPTX, PDF), voiceo
 site/  scripts/build_site.py     the website (deployed on Vercel from web/); site/audio = Urdu/English voice clips
 notebooks/                       executed Colab training notebook
 ```
+
+## Every link, with a second copy
+
+Every part of the project is on two separate hosts, so one outage never breaks a link.
+
+| What | Copy 1 | Copy 2 |
+|---|---|---|
+{copies_table}
+
+### LinkedIn
+
+{links['linkedin_note']}
 
 ## Limits
 
