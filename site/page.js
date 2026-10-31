@@ -131,6 +131,6 @@
   let armed = false;
   addEventListener("scroll", () => {
     if (armed) return; armed = true;
-    $$("section h2, .sub, .huge, .stack-fig, .mixup > *, .film-frame, .feature, .speak > *, .pair, .wall, .sources > div, .table-wrap, .model-row, .augment > *, .score, .figs > *, .limits-grid > *, .qa, .link, .foot, .bar-t, canvas.dots, .gauge").forEach((el) => near.observe(el));
+    $$("section h2, .sub, .huge, .stack-fig, .mixup > *, .film-frame, .feature, .speak > *, .pair, .wall, .sources > div, .table-wrap, .model-row, .augment > *, .score, .figs > *, .limits-grid > *, .qa, .foot, .bar-t, canvas.dots, .gauge").forEach((el) => near.observe(el));
   }, { passive: true, once: true });
 })();
